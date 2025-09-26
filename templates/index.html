@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewUp - Connect Brands with Influencers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(76, 110, 245, 0.9), rgba(106, 137, 204, 0.9));
+            color: #FFFFFF;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Add a subtle overlay to ensure text readability */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 0;
+        }
+
+        /* Ensure content stays above the overlay */
+        header, main, section, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .nav-btn-primary {
+            background-color: #7811bd;
+            color: #FFFFFF;
+        }
+
+        .nav-btn-primary:hover {
+            background-color: #6a0fa8;
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Banner */
+        .main-banner {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-banner h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-banner p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            padding: 4rem 5%;
+            text-align: center;
+            background: rgba(5, 228, 72, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #7811bd;
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #FF6F3B;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 5%;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        footer ul {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        footer a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">CrewUp</a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+                <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+                <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                <a href="{% url 'about' %}" class="text-white hover:text-gray-200 {% if 'about' in request.path %}border-b-2 border-white{% endif %}">About</a>
+                <li><a href="#success-stories">Success Stories</a></li>
+            </ul>
+            <div class="nav-buttons">
+                
+            </div>
+        </nav>
+    </header>
+
+    <section class="main-banner">
+        <h1>Connect with the Right Influencers</h1>
+        <p>Join thousands of brands and influencers creating impactful campaigns and driving real results through authentic partnerships.</p>
+        <div class="cta-buttons">
+            <a href="{% url 'signup' %}" class="btn btn-primary">Join the Platform</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <h2>Transforming Influencer Marketing</h2>
+        <p>CrewUp connects brands with authentic influencers to create meaningful partnerships and drive real engagement.</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <div>Successful Campaigns</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div>Active Influencers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div>Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <ul>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+             <li><a href="{% url 'about' %}">About Us</a></li>
+        </ul>
+        <div class="copyright">© 2025 CrewUp. All rights reserved.</div>
+    </footer>
+</body>
+</html>

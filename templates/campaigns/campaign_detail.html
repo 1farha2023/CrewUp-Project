@@ -1,0 +1,477 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Marketplace - CrewUp</title>
+    <style>
+        :root {
+            --primary-color: #8B5CF6;
+            --secondary-color: #4c6ef5;
+            --text-color: #333;
+            --light-bg: #F3F4F6;
+            --border-color: #E5E7EB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+    
+
+        body {
+            background-color: #F9FAFB;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+/* Header Styles */
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .nav-btn-primary {
+            background-color: #7811bd;
+            color: #FFFFFF;
+        }
+
+        .nav-btn-primary:hover {
+            background-color: #6a0fa8;
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B5CF6, #6366F1);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .signup-prompt {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            margin-left: 1rem;
+        }
+
+        .filters-section {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .filter-dropdown {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+        }
+
+        .more-filters {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .campaign-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .featured-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-name {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-description {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-details {
+            padding: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #F3F4F6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .apply-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .showing-results {
+            padding: 0 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .filters-section {
+                flex-direction: column;
+            }
+            
+            .filter-dropdown, .more-filters {
+                width: 100%;
+            }
+            
+            .campaigns-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+     <header>
+        <a href="/" class="logo">CrewUp</a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'campaigns:campaign_detail' %}">Campaigns</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#success-stories">Success Stories</a></li>
+            </ul>
+            <div class="nav-buttons">
+                
+            </div>
+        </nav>
+    </header>
+    <div class="header">
+        
+
+
+
+        <h1>Campaign Marketplace</h1>
+        <p>Discover amazing collaboration opportunities with top brands. Find campaigns that match your niche and audience.</p>
+        
+        <div class="signup-prompt">
+            <h2>Ready to Start Your Influencer Journey? •ᴗ•</h2>
+            <p>Sign up now to apply to campaigns, save your favorites, and connect with top brands!</p>
+            <div class="cta-buttons" style="margin-top: 1rem;">
+                <a href="{% url 'signup' %}" class="btn btn-primary">Create Free Account</a>
+                <a href="{% url 'login' %}" class="btn btn-secondary">Already have an account? Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters-section">
+        <div class="search-box">
+            <input type="text" placeholder="Search campaigns...">
+        </div>
+        <select class="filter-dropdown">
+            <option value="all">All Categories</option>
+            <option value="fashion">Fashion</option>
+            <option value="tech">Technology</option>
+            <option value="food">Food & Beverage</option>
+            <option value="lifestyle">Lifestyle</option>
+        </select>
+        <select class="filter-dropdown">
+            <option value="all">All Locations</option>
+            <option value="remote">Remote</option>
+            <option value="nyc">New York, NY</option>
+            <option value="la">Los Angeles, CA</option>
+        </select>
+        <button class="more-filters">
+            More Filters
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="showing-results">
+        <p>Showing 6 campaigns</p>
+    </div>
+
+    <div class="campaigns-grid">
+        <!-- Summer Fashion Campaign -->
+        <div class="campaign-card">
+            <div class="card-header">
+                <span class="featured-tag">Featured</span>
+                <div class="brand-name">StyleCo</div>
+                <h3 class="campaign-title">Summer Fashion Collection</h3>
+                <p class="campaign-description">Looking for fashion influencers to showcase our summer collection. Focus on sustainable fashion and lifestyle content.</p>
+            </div>
+            <div class="campaign-details">
+                <div class="detail-row">
+                    <span>💰 Budget</span>
+                    <span>$500 - $2,000</span>
+                </div>
+                <div class="detail-row">
+                    <span>📍 Location</span>
+                    <span>New York, NY</span>
+                </div>
+                <div class="detail-row">
+                    <span>👥 Applied</span>
+                    <span>45 influencers</span>
+                </div>
+                <div class="detail-row">
+                    <span>📅 Deadline</span>
+                    <span>Dec 30, 2024</span>
+                </div>
+                <div class="tags">
+                    <span class="tag">10k+ followers</span>
+                    <span class="tag">Fashion niche</span>
+                    <span class="tag">Content creation</span>
+                </div>
+                <a href="{% url 'signup' %}" class="apply-button">Sign Up to Apply</a>
+            </div>
+        </div>
+
+        <!-- Tech Product Campaign -->
+        <div class="campaign-card">
+            <div class="card-header">
+                <div class="brand-name">InnovateTech</div>
+                <h3 class="campaign-title">Tech Product Launch</h3>
+                <p class="campaign-description">Seeking tech reviewers for our new smartwatch launch. Must have experience with product reviews.</p>
+            </div>
+            <div class="campaign-details">
+                <div class="detail-row">
+                    <span>💰 Budget</span>
+                    <span>$1,000 - $5,000</span>
+                </div>
+                <div class="detail-row">
+                    <span>📍 Location</span>
+                    <span>Remote</span>
+                </div>
+                <div class="detail-row">
+                    <span>👥 Applied</span>
+                    <span>22 influencers</span>
+                </div>
+                <div class="detail-row">
+                    <span>📅 Deadline</span>
+                    <span>Jan 15, 2025</span>
+                </div>
+                <div class="tags">
+                    <span class="tag">Tech content</span>
+                    <span class="tag">Video creation</span>
+                    <span class="tag">Product review</span>
+                </div>
+                 <a href="{% url 'signup' %}" class="apply-button">Sign Up to Apply</a>
+            </div>
+        </div>
+
+        <!-- Recipe Challenge Campaign -->
+        <div class="campaign-card">
+            <div class="card-header">
+                <span class="featured-tag">Featured</span>
+                <div class="brand-name">NutriLife</div>
+                <h3 class="campaign-title">Healthy Recipe Challenge</h3>
+                <p class="campaign-description">Create engaging recipe content featuring our organic ingredients. Perfect for food and health influencers.</p>
+            </div>
+            <div class="campaign-details">
+                <div class="detail-row">
+                    <span>💰 Budget</span>
+                    <span>$300 - $1,500</span>
+                </div>
+                <div class="detail-row">
+                    <span>📍 Location</span>
+                    <span>Los Angeles, CA</span>
+                </div>
+                <div class="detail-row">
+                    <span>👥 Applied</span>
+                    <span>67 influencers</span>
+                </div>
+                <div class="detail-row">
+                    <span>📅 Deadline</span>
+                    <span>Jan 5, 2025</span>
+                </div>
+                <div class="tags">
+                    <span class="tag">Food content</span>
+                    <span class="tag">Recipe creation</span>
+                    <span class="tag">Photography</span>
+                </div>
+                <a href="{% url 'signup' %}" class="apply-button">Sign Up to Apply</a>
+                           
+            </div>
+        </div>
+    </div>
+</body>
+</html>

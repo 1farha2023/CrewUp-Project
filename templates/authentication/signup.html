@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create Your Account</h2>
+            <div class="mt-4 flex justify-center space-x-4">
+                <button id="brandToggle" class="user-type-toggle px-4 py-2 rounded-lg" onclick="toggleUserType('brand')">I am a Brand</button>
+                <button id="influencerToggle" class="user-type-toggle px-4 py-2 rounded-lg" onclick="toggleUserType('influencer')">I am an Influencer</button>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="p-4 mb-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user_type" id="userTypeInput" value="brand">
+            
+            <!-- Common Fields -->
+            <div class="rounded-md shadow-sm -space-y-px mb-4">
+                <div class="mb-4">
+                    <label for="username" class="sr-only">Username</label>
+                    <input id="username" name="username" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Username">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="sr-only">Email</label>
+                    <input id="email" name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Email">
+                </div>
+                <div class="mb-4">
+                    <label for="phone_number" class="sr-only">Phone Number</label>
+                    <input id="phone_number" name="phone_number" type="tel" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Phone Number">
+                </div>
+                <div class="mb-4">
+                    <label for="website" class="sr-only">Website</label>
+                    <input id="website" name="website" type="url" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Website (Optional)">
+                </div>
+            </div>
+
+            <!-- Brand Fields -->
+            <div id="brandFields" class="space-y-4">
+                <div>
+                    <label for="company_name" class="sr-only">Company Name</label>
+                    <input id="company_name" name="company_name" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Company Name">
+                </div>
+                <div>
+                    <label for="industry" class="sr-only">Industry</label>
+                    <input id="industry" name="industry" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Industry">
+                </div>
+                <div>
+                    <label for="company_size" class="sr-only">Company Size</label>
+                    <select id="company_size" name="company_size" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm">
+                        <option value="">Select Company Size</option>
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201+">201+ employees</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="budget_range" class="sr-only">Budget Range</label>
+                    <select id="budget_range" name="budget_range" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm">
+                        <option value="">Select Budget Range</option>
+                        <option value="0-1000">$0 - $1,000</option>
+                        <option value="1001-5000">$1,001 - $5,000</option>
+                        <option value="5001-10000">$5,001 - $10,000</option>
+                        <option value="10001+">$10,001+</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="description" class="sr-only">Company Description</label>
+                    <textarea id="description" name="description" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Company Description"></textarea>
+                </div>
+            </div>
+
+            <!-- Influencer Fields -->
+            <div id="influencerFields" class="space-y-4" style="display: none;">
+                <div>
+                    <label for="niche" class="sr-only">Niche</label>
+                    <input id="niche" name="niche" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Your Niche">
+                </div>
+                <div>
+                    <label for="instagram_handle" class="sr-only">Instagram Handle</label>
+                    <input id="instagram_handle" name="instagram_handle" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Instagram Handle">
+                </div>
+                <div>
+                    <label for="youtube_channel" class="sr-only">YouTube Channel</label>
+                    <input id="youtube_channel" name="youtube_channel" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="YouTube Channel">
+                </div>
+                <div>
+                    <label for="tiktok_handle" class="sr-only">TikTok Handle</label>
+                    <input id="tiktok_handle" name="tiktok_handle" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="TikTok Handle">
+                </div>
+                <div>
+                    <label for="followers_count" class="sr-only">Followers Count</label>
+                    <input id="followers_count" name="followers_count" type="number" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Total Followers Count">
+                </div>
+                <div>
+                    <label for="bio" class="sr-only">Bio</label>
+                    <textarea id="bio" name="bio" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Your Bio"></textarea>
+                </div>
+            </div>
+
+            <!-- Password Fields -->
+            <div class="space-y-4">
+                <div>
+                    <label for="password1" class="sr-only">Password</label>
+                    <input id="password1" name="password1" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Password">
+                </div>
+                <div>
+                    <label for="password2" class="sr-only">Confirm Password</label>
+                    <input id="password2" name="password2" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm" placeholder="Confirm Password">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    Create Account
+                </button>
+            </div>
+        </form>
+        
+        <div class="text-center">
+            <p class="text-sm text-gray-600">Already have an account? <a href="{% url 'login' %}" class="font-medium text-purple-600 hover:text-purple-500">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .user-type-toggle {
+        background-color: #f3f4f6;
+        color: #6b7280;
+        transition: all 0.3s ease;
+    }
+    .user-type-toggle.active {
+        background-color: #7c3aed;
+        color: white;
+    }
+</style>
+
+<script>
+    function toggleUserType(type) {
+        const brandToggle = document.getElementById('brandToggle');
+        const influencerToggle = document.getElementById('influencerToggle');
+        const brandFields = document.getElementById('brandFields');
+        const influencerFields = document.getElementById('influencerFields');
+        const userTypeInput = document.getElementById('userTypeInput');
+
+        if (type === 'brand') {
+            brandToggle.classList.add('active');
+            influencerToggle.classList.remove('active');
+            brandFields.style.display = 'block';
+            influencerFields.style.display = 'none';
+            userTypeInput.value = 'brand';
+        } else {
+            influencerToggle.classList.add('active');
+            brandToggle.classList.remove('active');
+            brandFields.style.display = 'none';
+            influencerFields.style.display = 'block';
+            userTypeInput.value = 'influencer';
+        }
+    }
+
+    // Initialize with brand view
+    window.onload = function() {
+        toggleUserType('brand');
+    }
+</script>
+{% endblock %}
+</html>
