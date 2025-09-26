@@ -12,7 +12,7 @@
         <h1 class="text-4xl font-bold text-gray-900 mb-4">How Campaign Collaboration Works</h1>
         <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Connect with top brands, create amazing content & get paid for your influence - here's everything you need to know to get started</p>
         <div class="flex justify-center gap-4">
-            <a href="{% url 'signup' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700">
+            <a href="{% url 'authentication:signup' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700">
                 Get Started Now
             </a>
             <a href="{% url 'campaigns:campaign_list' %}" class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
@@ -289,7 +289,7 @@
     <div class="container mx-auto px-4 text-center">
         <h2 class="text-3xl font-bold text-white mb-4">Ready to Start Your Journey?</h2>
         <p class="text-white text-lg mb-8">Join CrewUp today and start collaborating with amazing brands</p>
-        <a href="{% url 'signup' %}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
+        <a href="{% url 'authentication:signup' %}" class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10">
             Get Started Now
         </a>
     </div>

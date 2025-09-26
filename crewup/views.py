@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 
 
-<<<<<<< HEAD
+
 def index(request):
     return render(request, 'index.html')
 
@@ -18,7 +18,7 @@ def campaign_list(request):
 
 def pricing(request):
     return render(request, 'pricing.html')
-=======
+
 def landing_page(request):
     return render(request, 'index.html')
->>>>>>> f074d2f1517a89854def9b484246dec45cb57890
+

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -21,7 +21,7 @@
         {% endfor %}
     {% endif %}
     
-    <form action="{% url 'login' %}" method="post" class="space-y-6">
+    <form action="{% url 'authentication:login' %}" method="post" class="space-y-6">
         {% csrf_token %}
         <div class="space-y-2">
             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -74,7 +74,7 @@
                     Remember Me
                 </label>
             </div>
-            <a href="{% url 'forget_password' %}" class="text-sm text-gray-600 hover:text-purple-500">
+            <a href="{% url 'authentication:forget_password' %}" class="text-sm text-gray-600 hover:text-purple-500">
                 Forgot Password?
             </a>
         </div>
@@ -111,14 +111,14 @@
 
     <p class="mt-6 text-center text-sm text-gray-600">
         Don't have an account?
-        <a href="{% url 'signup' %}" class="font-medium text-purple-600 hover:text-purple-500">
+        <a href="{% url 'authentication:signup' %}" class="font-medium text-purple-600 hover:text-purple-500">
             Sign Up here
         </a>
     </p>
   </div>
 </div>
 {% endblock %}
-=======
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,7 +137,7 @@
     class="bg-gradient-to-tr from-indigo-800 via-purple-800 to-pink-700 bg-opacity-90 rounded-3xl shadow-xl p-10 w-full max-w-md text-white"
   >
     <h2 class="text-3xl font-bold mb-8 text-center">Welcome Back</h2>
-    <form action="{% url 'login' %}" method="post" class="space-y-6" aria-label="Login form">
+    <form action="{% url 'authentication:login' %}" method="post" class="space-y-6" aria-label="Login form">
         {% csrf_token %}
       <div>
         <label for="email" class="block mb-2 font-semibold">Email</label>
@@ -172,7 +172,7 @@
       </button>
       <div class="text-center mt-4">
         <a
-          href="{% url 'forget_password' %}"
+          href="{% url 'authentication:forget_password' %}"
           class="text-pink-400 hover:text-pink-600 underline text-sm"
           >Forgot password?</a
         >
@@ -181,4 +181,4 @@
   </div>
 </body>
 </html>
->>>>>>> f074d2f1517a89854def9b484246dec45cb57890
+
