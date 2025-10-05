@@ -6,6 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CrewUp - Connect Brands with Influencers</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -15,7 +25,11 @@
         }
 
         body {
-            background: linear-gradient(135deg, rgba(76, 110, 245, 0.9), rgba(106, 137, 204, 0.9));
+            background: linear-gradient(135deg, rgba(76, 110, 245, 0.7), rgba(106, 137, 204, 0.7)),
+                        url('/static/images/templates/landing.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: #FFFFFF;
             min-height: 100vh;
             position: relative;
@@ -227,6 +241,50 @@
         .copyright {
             opacity: 0.6;
         }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Enhanced glassmorphism effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animation delays for staggered effect */
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+        .animate-delay-500 { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
@@ -251,7 +309,7 @@
         <p>Join thousands of brands and influencers creating impactful campaigns and driving real results through authentic partnerships.</p>
         <div class="cta-buttons">
             <a href="{% url 'authentication:signup' %}" class="btn btn-primary">Join the Platform</a>
-            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+            <a href="{% url 'authentication:login' %}" class="btn btn-secondary">Log In</a>
         </div>
     </section>
 
@@ -274,6 +332,136 @@
         </div>
     </section>
 
+    <!-- Featured Users Section -->
+    <section class="py-16 bg-white/5 backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white">Featured Creators</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for user in featured_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-white/80 mb-2">
+                            <span class="bg-purple-600 px-2 py-1 rounded-full text-sm">{{ user.user_type|title }}</span>
+                        </p>
+                        {% if user.user_type == 'influencer' %}
+                        <p class="text-white/70 text-sm mb-3">{{ user.niche|default:"Multi-Niche" }}</p>
+                        {% elif user.user_type == 'brand' %}
+                        <p class="text-white/70 text-sm mb-3">{{ user.industry|default:"Various Industries" }}</p>
+                        {% endif %}
+                        <a href="#" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-300">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Users Section -->
+    <section class="py-16 bg-gradient-to-r from-pink-500/10 to-purple-500/10">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center mb-12">
+                <i class="fab fa-instagram text-4xl text-pink-500 mr-4"></i>
+                <h2 class="text-4xl font-bold text-white">Instagram Creators</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for user in instagram_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-pink-300 mb-2">@{{ user.instagram_handle }}</p>
+                        <p class="text-white/70 text-sm mb-3">{{ user.followers_count|default:"0" }} followers</p>
+                        <a href="#" class="inline-block bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:from-pink-600 hover:to-purple-600 transition-all duration-300">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- TikTok Users Section -->
+    <section class="py-16 bg-white/5 backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center mb-12">
+                <i class="fab fa-tiktok text-4xl text-black mr-4 bg-white rounded-full p-2"></i>
+                <h2 class="text-4xl font-bold text-white">TikTok Creators</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for user in tiktok_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-black to-gray-800 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-gray-300 mb-2">@{{ user.tiktok_handle }}</p>
+                        <p class="text-white/70 text-sm mb-3">{{ user.followers_count|default:"0" }} followers</p>
+                        <a href="#" class="inline-block bg-gradient-to-r from-gray-800 to-black text-white px-6 py-2 rounded-full text-sm font-medium hover:from-gray-900 hover:to-gray-900 transition-all duration-300">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-16 bg-gradient-to-r from-purple-500/10 to-blue-500/10">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white">Explore Categories</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for category_code, category_name in categories %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl text-center cursor-pointer">
+                    <div class="text-6xl mb-4">
+                        {% if category_code == 'fashion' %}
+                        👘
+                        {% elif category_code == 'tech' %}
+                        💻
+                        {% elif category_code == 'food' %}
+                        🍵
+                        {% elif category_code == 'lifestyle' %}
+                        🧗‍♂️
+                        {% elif category_code == 'travel' %}
+                        🗺
+                        
+                        {% else %}
+                        📱
+                        {% endif %}
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">{{ category_name }}</h3>
+                    <p class="text-white/70">Discover amazing creators in {{ category_name|lower }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
     <footer>
         <ul>
             <li><a href="/privacy">Privacy Policy</a></li>
@@ -283,6 +471,66 @@
         </ul>
         <div class="copyright">© 2025 CrewUp. All rights reserved.</div>
     </footer>
+
+    <!-- JavaScript for enhanced animations and interactions -->
+    <script>
+        // Intersection Observer for scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__fadeInUp');
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.bg-white\\/10, .glass-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // Add smooth scroll to category cards
+            const categoryCards = document.querySelectorAll('.cursor-pointer');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // Add parallax effect to background
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const background = document.body;
+                const speed = scrolled * 0.5;
+                background.style.backgroundPosition = `center ${speed}px`;
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
 
 </body>
 </html>

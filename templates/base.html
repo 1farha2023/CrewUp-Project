@@ -54,8 +54,16 @@
 
         <div class="flex items-center space-x-4">
             {% if user.is_authenticated %}
-                <a href="#" class="text-white hover:text-gray-200">Dashboard</a>
-                <a href="#" class="bg-white text-purple-600 px-6 py-2 rounded-full hover:bg-gray-100">Logout</a>
+                {% if user.user_type == 'admin' %}
+                    <a href="{% url 'admin_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                {% elif user.user_type == 'brand' %}
+                    <a href="{% url 'brand_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                {% elif user.user_type == 'influencer' %}
+                    <a href="{% url 'influencer_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                {% else %}
+                    <a href="{% url 'home' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                {% endif %}
+                <a href="{% url 'authentication:logout' %}" class="bg-white text-purple-600 px-6 py-2 rounded-full hover:bg-gray-100">Logout</a>
             {% else %}
                 <a href="{% url 'authentication:login' %}" class="text-white hover:text-gray-200">Sign In</a>
                 <a href="{% url 'authentication:signup' %}" class="bg-white text-purple-600 px-6 py-2 rounded-full hover:bg-gray-100">Get Started</a>

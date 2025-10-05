@@ -28,6 +28,9 @@ urlpatterns = [
     path('pricing/', views.pricing, name='pricing'),
     path('auth/', include('authentication.urls')),
     path('campaigns/', include('campaigns.urls')),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('influencer-dashboard/', views.influencer_dashboard, name='influencer_dashboard'),
+    path('brand-dashboard/', views.brand_dashboard, name='brand_dashboard'),
 ]
 
 # Serve static files during development
