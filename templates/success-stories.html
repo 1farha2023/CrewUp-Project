@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Success Stories - CrewUp{% endblock %}
+
+{% block header_class %}bg-purple-600{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-purple-50 via-gray-50 to-blue-50 py-20" style="padding-top: 100px;">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center">
+            <h1 class="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 via-purple-700 to-blue-600 bg-clip-text text-transparent">
+                Success Stories
+            </h1>
+            <p class="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+                Discover how brands are achieving extraordinary results with CrewUp's influencer marketing platform
+            </p>
+            <div class="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-sm">
+                <span class="text-purple-600 font-semibold mr-2">✨</span>
+                <span class="text-purple-600 font-semibold">View Success Story</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Platform Performance -->
+<section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Platform Performance</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Real results from real campaigns</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Engagement Rate Card -->
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border border-green-100 text-center hover:shadow-lg transition-shadow">
+                <div class="text-green-600 mb-4">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="text-4xl font-bold text-green-600 mb-2">34%</div>
+                <p class="text-gray-700 font-medium text-sm">Average engagement rate across all campaigns</p>
+            </div>
+
+            <!-- Reach Card -->
+            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl border border-blue-100 text-center hover:shadow-lg transition-shadow">
+                <div class="text-blue-600 mb-4">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-4xl font-bold text-blue-600 mb-2">50M+</div>
+                <p class="text-gray-700 font-medium text-sm">People reached through our platform</p>
+            </div>
+
+            <!-- Conversion Rate Card -->
+            <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl border border-purple-100 text-center hover:shadow-lg transition-shadow">
+                <div class="text-purple-600 mb-4">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-4xl font-bold text-purple-600 mb-2">94%</div>
+                <p class="text-gray-700 font-medium text-sm">Campaign conversion rate</p>
+            </div>
+
+            <!-- Brands Card -->
+            <div class="bg-gradient-to-br from-orange-50 to-amber-50 p-8 rounded-2xl border border-orange-100 text-center hover:shadow-lg transition-shadow">
+                <div class="text-orange-600 mb-4">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div class="text-4xl font-bold text-orange-600 mb-2">2,500+</div>
+                <p class="text-gray-700 font-medium text-sm">Brands that achieved their goals</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Success Stories -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Success Stories</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">In-depth case studies showcasing exceptional campaigns across industries</p>
+        </div>
+
+        <!-- Story 1: Fashion Brand -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden mb-12 hover:shadow-xl transition-shadow">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="bg-gradient-to-br from-gray-800 via-gray-700 to-purple-900 p-12 flex flex-col justify-center relative">
+                    <div class="absolute top-6 left-6 flex items-center space-x-3">
+                        <button class="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </button>
+                        <span class="text-white/80 text-sm">Watch Success Story</span>
+                    </div>
+                    <div class="text-center mt-12">
+                        <div class="text-8xl mb-6">👗</div>
+                        <h3 class="text-2xl font-bold text-white">Fashion Brand</h3>
+                    </div>
+                </div>
+                <div class="p-12">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Fashion Brand Achieves 300% ROI with Micro-Influencers</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        A luxury fashion brand partnered with micro-influencers to launch their new collection, resulting in unprecedented engagement and sales growth.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-1">300%</div>
+                            <div class="text-sm text-gray-600">ROI Increase</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600 mb-1">2.5M</div>
+                            <div class="text-sm text-gray-600">Impressions</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600 mb-1">15K</div>
+                            <div class="text-sm text-gray-600">Conversions</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <p class="text-sm text-gray-700 italic mb-4">
+                            "CrewUp helped us find the perfect micro-influencers for our brand. The authenticity and engagement we achieved was incredible."
+                        </p>
+                        <div class="text-right">
+                            <div class="text-purple-600 font-semibold">Sarah Johnson</div>
+                            <div class="text-xs text-gray-600">Marketing Director at LuxuryFashion</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 2: Food Brand -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden mb-12 hover:shadow-xl transition-shadow">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="bg-gradient-to-br from-orange-800 via-red-700 to-pink-800 p-12 flex flex-col justify-center relative">
+                    <div class="absolute top-6 left-6 flex items-center space-x-3">
+                        <button class="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </button>
+                        <span class="text-white/80 text-sm">Watch Success Story</span>
+                    </div>
+                    <div class="text-center mt-12">
+                        <div class="text-8xl mb-6">🍔</div>
+                        <h3 class="text-2xl font-bold text-white">Food Brand</h3>
+                    </div>
+                </div>
+                <div class="p-12">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Food Brand Doubles Sales with Recipe Collaborations</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        A food company partnered with food bloggers and chefs to create authentic recipe content that drove massive sales growth.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-1">280%</div>
+                            <div class="text-sm text-gray-600">Sales Increase</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600 mb-1">3.8M</div>
+                            <div class="text-sm text-gray-600">Recipe Views</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600 mb-1">25K</div>
+                            <div class="text-sm text-gray-600">User Generated Content</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <p class="text-sm text-gray-700 italic mb-4">
+                            "The recipe collaborations created by CrewUp influencers not only drove sales but also built a community around our brand."
+                        </p>
+                        <div class="text-right">
+                            <div class="text-purple-600 font-semibold">Mike Chen</div>
+                            <div class="text-xs text-gray-600">CEO at GourmetFoods</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story 3: Beauty Brand -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <div class="bg-gradient-to-br from-pink-800 via-purple-700 to-indigo-800 p-12 flex flex-col justify-center relative">
+                    <div class="absolute top-6 left-6 flex items-center space-x-3">
+                        <button class="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-colors">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </button>
+                        <span class="text-white/80 text-sm">Watch Success Story</span>
+                    </div>
+                    <div class="text-center mt-12">
+                        <div class="text-8xl mb-6">💄</div>
+                        <h3 class="text-2xl font-bold text-white">Beauty Brand</h3>
+                    </div>
+                </div>
+                <div class="p-12">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Beauty Brand's Viral TikTok Campaign</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        A beauty startup collaborated with TikTok creators to generate millions of views and establish brand awareness in record time.
+                    </p>
+
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-1">520%</div>
+                            <div class="text-sm text-gray-600">Engagement Rate</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-600 mb-1">8.1M</div>
+                            <div class="text-sm text-gray-600">Video Views</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-600 mb-1">156K</div>
+                            <div class="text-sm text-gray-600">New Followers</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <p class="text-sm text-gray-700 italic mb-4">
+                            "CrewUp connected us with the perfect TikTok creators. Our campaign went viral and the results exceeded all expectations."
+                        </p>
+                        <div class="text-right">
+                            <div class="text-purple-600 font-semibold">Emma Rodriguez</div>
+                            <div class="text-xs text-gray-600">Founder at BeautyStartup</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Wins Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Quick Wins</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Rapid results across different campaign types</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center group cursor-pointer">
+                <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
+                    <span class="text-3xl">🚀</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Fitness App Launch</h3>
+                <p class="text-gray-600 mb-4">500K downloads in 48 hours</p>
+                <div class="text-sm text-gray-500">
+                    <div class="font-semibold text-green-600">200% increase</div>
+                    <div>in signups</div>
+                </div>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
+                    <span class="text-3xl">💼</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">B2B Campaign Success</h3>
+                <p class="text-gray-600 mb-4">15M impressions in one week</p>
+                <div class="text-sm text-gray-500">
+                    <div class="font-semibold text-blue-600">300% increase</div>
+                    <div>in engagement</div>
+                </div>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-200 transition-colors">
+                    <span class="text-3xl">🎮</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Gaming Product Launch</h3>
+                <p class="text-gray-600 mb-4">2M+ engagement in 72 hours</p>
+                <div class="text-sm text-gray-500">
+                    <div class="font-semibold text-purple-600">150% increase</div>
+                    <div>in conversion rate</div>
+                </div>
+            </div>
+
+            <div class="text-center group cursor-pointer">
+                <div class="bg-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-200 transition-colors">
+                    <span class="text-3xl">✈️</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-3">Travel Brand Campaign</h3>
+                <p class="text-gray-600 mb-4">300% booking increase</p>
+                <div class="text-sm text-gray-500">
+                    <div class="font-semibold text-orange-600">1.5M</div>
+                    <div>social interactions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Real feedback from brands who've achieved incredible results with CrewUp</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <span class="text-yellow-400 text-xl">★★★★★</span>
+                </div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    "CrewUp transformed our influencer marketing strategy completely. The platform is intuitive, the results are measurable, and the ROI has been outstanding."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        SC
+                    </div>
+                    <div>
+                        <div class="text-purple-600 font-semibold">Sarah Chen</div>
+                        <div class="text-sm text-gray-600">Marketing Director, TechCorp</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <span class="text-yellow-400 text-xl">★★★★★</span>
+                </div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    "The best investment we've made for our marketing efforts. The influencer matches are perfect and the campaign management tools save us countless hours."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        MR
+                    </div>
+                    <div>
+                        <div class="text-purple-600 font-semibold">Marcus Rodriguez</div>
+                        <div class="text-sm text-gray-600">CEO, StartupXYZ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <span class="text-yellow-400 text-xl">★★★★★</span>
+                </div>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    "We've tried other platforms, but CrewUp stands out with their quality of influencers and the detailed analytics that help us optimize every campaign."
+                </p>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                        EW
+                    </div>
+                    <div>
+                        <div class="text-purple-600 font-semibold">Emily Watson</div>
+                        <div class="text-sm text-gray-600">Brand Manager, FashionCo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="bg-gradient-to-r from-purple-600 via-purple-700 to-blue-600 text-white py-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold mb-6">Ready to Create Your Success Story?</h2>
+        <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Join thousands of brands who have achieved exceptional results with CrewUp's influencer marketing platform.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'authentication:signup' %}" class="bg-white text-purple-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg">
+                Start Your Success Story
+            </a>
+            <a href="{% url 'campaigns:campaign_list' %}" class="bg-transparent border-2 border-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-colors text-lg">
+                Browse Campaigns
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

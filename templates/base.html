@@ -17,11 +17,12 @@
         body {
             min-height: 100vh;
             position: relative;
+            padding-top: 100px; /* Add padding to account for fixed navbar */
         }
 
         /* Header Styles */
         header {
-            padding: 1.5rem 5%;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -30,48 +31,294 @@
             position: fixed;
             width: 100%;
             z-index: 1000;
+            top: 0;
+            left: 0;
         }
 
         .gradient-background {
             background: linear-gradient(135deg, rgba(76, 110, 245, 0.9), rgba(106, 137, 204, 0.9));
+        }
+
+        /* Logo Styles */
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Button Styles */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn-primary {
+            background: #f50057;
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .nav-btn-primary:hover {
+            background: #e0004d;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(245, 0, 87, 0.3);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-toggle:hover {
+            opacity: 0.8;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-menu a {
+            color: #333333;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background-color: rgba(245, 0, 87, 0.1);
+            color: #9300f5ff;
+        }
+
+        /* Mobile Navigation Links */
+        .navbar-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            body {
+                padding-top: 80px; /* Adjust padding for mobile */
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navigation Header -->
     <header class="{% block header_class %}{% endblock %}">
-        <div class="flex items-center">
-            <a href="{% url 'home' %}" class="text-2xl font-bold text-white">CrewUp</a>
-        </div>
-        
-        <nav class="hidden md:flex space-x-8">
-            <a href="{% url 'home' %}" class="text-white hover:text-gray-200 {% if request.path == '/' %}border-b-2 border-white{% endif %}">Home</a>
-            <a href="{% url 'about' %}" class="text-white hover:text-gray-200 {% if 'about' in request.path %}border-b-2 border-white{% endif %}">About</a>
-            <a href="{% url 'campaigns:campaign_list' %}" class="text-white hover:text-gray-200 {% if 'campaigns' in request.path %}border-b-2 border-white{% endif %}">Campaigns</a>
-            <a href="{% url 'how_it_works' %}" class="text-white hover:text-gray-200 {% if 'how-it-works' in request.path %}border-b-2 border-white{% endif %}">How it Works</a>
-            <a href="{% url 'pricing' %}" class="text-white hover:text-gray-200 {% if 'pricing' in request.path %}border-b-2 border-white{% endif %}">Pricing</a>
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo">CrewUp</a>
+
+        <!-- Desktop Navigation -->
+        <nav>
+            <ul class="navbar-links">
+                <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+                <li><a href="{% url 'influencers' %}">Influencers</a></li>
+                <li><a href="{% url 'brands' %}">Brands</a></li>
+                <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+                <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'success_stories' %}">Success Stories</a></li>
+            </ul>
         </nav>
 
-        <div class="flex items-center space-x-4">
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
             {% if user.is_authenticated %}
                 {% if user.user_type == 'admin' %}
-                    <a href="{% url 'admin_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                    <a href="{% url 'admin_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
                 {% elif user.user_type == 'brand' %}
-                    <a href="{% url 'brand_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                    <a href="{% url 'brand_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
                 {% elif user.user_type == 'influencer' %}
-                    <a href="{% url 'influencer_dashboard' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                    <a href="{% url 'influencer_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
                 {% else %}
-                    <a href="{% url 'home' %}" class="text-white hover:text-gray-200">Dashboard</a>
+                    <a href="{% url 'home' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
                 {% endif %}
-                <a href="{% url 'authentication:logout' %}" class="bg-white text-purple-600 px-6 py-2 rounded-full hover:bg-gray-100">Logout</a>
+                <a href="{% url 'authentication:logout' %}" class="nav-btn nav-btn-primary">Logout</a>
             {% else %}
-                <a href="{% url 'authentication:login' %}" class="text-white hover:text-gray-200">Sign In</a>
-                <a href="{% url 'authentication:signup' %}" class="bg-white text-purple-600 px-6 py-2 rounded-full hover:bg-gray-100">Get Started</a>
+                <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary">Sign In</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary">Get Started</a>
             {% endif %}
         </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+            <li><a href="{% url 'influencers' %}">Influencers</a></li>
+            <li><a href="{% url 'brands' %}">Brands</a></li>
+            <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+            <li><a href="{% url 'pricing' %}">Pricing</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'success_stories' %}">Success Stories</a></li>
+        </ul>
+        <div style="padding: 1rem; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 1rem;">
+            {% if user.is_authenticated %}
+                <a href="{% url 'authentication:logout' %}" class="nav-btn nav-btn-primary" style="display: inline-block; margin-bottom: 0.5rem;">Logout</a>
+            {% else %}
+                <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary" style="display: inline-block; margin-bottom: 0.5rem;">Sign In</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary" style="display: inline-block;">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
 
     {% block content %}
     {% endblock %}
+
+    <script>
+        // Mobile menu toggle functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('active');
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                    mobileMenu.classList.remove('active');
+                }
+            }
+        });
+
+        // Close mobile menu on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                }
+            }
+        });
+
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

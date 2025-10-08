@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewUp - Browse Influencers</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Purple-Pink Color Palette */
+            --amethyst: #7b3fa7ff;
+            --lavender-floral: #b66ee8ff;
+            --heliotrope: #c879ffff;
+            --heliotrope-2: #d689ffff;
+            --violet-web: #e498ffff;
+            --mauve: #f2a8ffff;
+            --mauve-2: #ffb7ffff;
+            --mauve-3: #ffc4ffff;
+            --mauve-4: #d67ed6ff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #FFFFFF;
+            color: #333333;
+            min-height: 100vh;
+            position: relative;
+            padding-top: 0;
+        }
+
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(255, 182, 255, 0.95), rgba(200, 121, 255, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            border-bottom: none;
+            box-shadow: 0 2px 20px rgba(200, 121, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6a4c93;
+            text-decoration: none;
+            margin-right: auto;
+            background: linear-gradient(135deg, #6a4c93, #8a5ba8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            margin: 0;
+        }
+
+        .navbar-links a {
+            color: #6a4c93;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .navbar-links a:hover {
+            background: rgba(138, 91, 168, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, #8a5ba8, #a855f7);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            border: none;
+        }
+
+        .nav-btn-primary:hover {
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #6a4c93;
+            border: 2px solid #6a4c93;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(138, 91, 168, 0.1);
+            border-color: #8a5ba8;
+            color: #8a5ba8;
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 0;
+            padding: 3rem;
+            padding-top: 100px;
+            display: flex;
+            gap: 3rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: flex-start;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #333333;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .filter-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-section h4 {
+            color: #333333;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .niche-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .niche-item {
+            background: rgba(138, 91, 168, 0.1);
+            border: 1px solid rgba(138, 91, 168, 0.3);
+            border-radius: 20px;
+            padding: 0.5rem;
+            text-align: center;
+            color: #333333;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .niche-item:hover,
+        .niche-item.active {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            border-color: var(--pink-lavender);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(138, 91, 168, 0.3);
+            color: #FFFFFF;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid rgba(138, 91, 168, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333333;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--heliotrope);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(138, 91, 168, 0.3);
+        }
+
+        .search-box::placeholder {
+            color: rgba(51, 51, 51, 0.6);
+        }
+
+        /* Influencers Grid */
+        .influencers-container {
+            flex: 1;
+        }
+
+        .influencers-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+        }
+
+        .influencers-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .influencers-header p {
+            color: rgba(51, 51, 51, 0.8);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .influencers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Influencer Card */
+        .influencer-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 350px;
+            box-shadow: 0 4px 20px rgba(138, 91, 168, 0.1);
+        }
+
+        .influencer-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(138, 91, 168, 0.2);
+            border-color: var(--heliotrope);
+        }
+
+        .influencer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(200, 121, 255, 0.05), rgba(242, 168, 255, 0.03));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        .influencer-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            position: relative;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .influencer-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--heliotrope);
+            margin-bottom: 1rem;
+        }
+
+        .default-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+            border: 3px solid var(--violet-web);
+        }
+
+        .influencer-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 0.5rem;
+        }
+
+        .influencer-location {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .influencer-niche {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 1rem;
+        }
+
+        .rating-value {
+            color: #333333;
+            font-size: 0.9rem;
+        }
+
+        .followers-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: rgba(51, 51, 51, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .social-platforms {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(138, 91, 168, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333333;
+            font-size: 0.8rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-invite {
+            background: linear-gradient(135deg, var(--violet-web), var(--heliotrope));
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(228, 152, 255, 0.3);
+            border: 1px solid rgba(200, 121, 255, 0.3);
+        }
+
+        .btn-invite:hover {
+            background: linear-gradient(135deg, var(--mauve), var(--pink-lavender));
+            box-shadow: 0 8px 25px rgba(242, 168, 255, 0.5);
+            transform: translateY(-3px) scale(1.02);
+            border-color: var(--pink-lavender);
+        }
+
+        .btn-save {
+            background: rgba(138, 91, 168, 0.1);
+            color: #333333;
+            border: 1px solid rgba(138, 91, 168, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-save:hover {
+            background: rgba(138, 91, 168, 0.2);
+            border-color: rgba(138, 91, 168, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(138, 91, 168, 0.3);
+        }
+
+        .btn-view {
+            background: rgba(138, 91, 168, 0.1);
+            color: #333333;
+            border: 1px solid rgba(138, 91, 168, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-view:hover {
+            background: rgba(138, 91, 168, 0.2);
+            border-color: rgba(138, 91, 168, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(138, 91, 168, 0.3);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                padding: 1rem;
+                padding-top: 120px;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-width: 100%;
+            }
+
+            .influencers-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .influencers-header {
+                text-align: center;
+            }
+
+            .influencers-header h1 {
+                font-size: 2rem;
+            }
+
+            .influencers-header p {
+                font-size: 1rem;
+            }
+
+            nav {
+                justify-content: space-between;
+                padding: 0 15px;
+            }
+
+            .navbar-links {
+                display: none;
+            }
+
+            .navbar-buttons {
+                margin-left: auto;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-btn {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+
+            .influencer-card {
+                min-height: 300px;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .card-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Use base.html navbar -->
+    <header class="{% block header_class %}{% endblock %}">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo">CrewUp</a>
+
+        <!-- Desktop Navigation -->
+        <nav>
+            <ul class="navbar-links">
+                <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+                <li><a href="{% url 'influencers' %}">Influencers</a></li>
+                <li><a href="{% url 'brands' %}">Brands</a></li>
+                <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+                <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'success_stories' %}">Success Stories</a></li>
+            </ul>
+        </nav>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            {% if user.is_authenticated %}
+                {% if user.user_type == 'admin' %}
+                    <a href="{% url 'admin_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                {% elif user.user_type == 'brand' %}
+                    <a href="{% url 'brand_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                {% elif user.user_type == 'influencer' %}
+                    <a href="{% url 'influencer_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                {% else %}
+                    <a href="{% url 'home' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                {% endif %}
+                <a href="{% url 'authentication:logout' %}" class="nav-btn nav-btn-primary">Logout</a>
+            {% else %}
+                <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary">Sign In</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary">Get Started</a>
+            {% endif %}
+        </div>
+
+        
+    </header>
+
+
+    <!-- Mobile Menu -->
+    
+        <div style="padding: 1rem; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 1rem;">
+            {% if user.is_authenticated %}
+                <a href="{% url 'authentication:logout' %}" class="nav-btn nav-btn-primary" style="display: inline-block; margin-bottom: 0.5rem;">Logout</a>
+            {% else %}
+                <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary" style="display: inline-block; margin-bottom: 0.5rem;">Sign In</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary" style="display: inline-block;">Get Started</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar animate__animated animate__fadeInLeft">
+            <div class="filter-section">
+                <h4>Niches</h4>
+                <div class="niche-grid">
+                    <div class="niche-item {% if not current_niche %}filter-active{% endif %}">All</div>
+                    {% for niche in niches %}
+                    <div class="niche-item {% if current_niche == niche %}filter-active{% endif %}">{{ niche }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4>Platform</h4>
+                <div class="niche-grid">
+                    <div class="niche-item">All</div>
+                    <div class="niche-item">Instagram</div>
+                    <div class="niche-item">TikTok</div>
+                    <div class="niche-item">YouTube</div>
+                    <div class="niche-item">Twitter</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <input type="text" class="search-box" placeholder="Search creators or niches...">
+            </div>
+        </aside>
+
+        <!-- Influencers Grid -->
+        <main class="influencers-container animate__animated animate__fadeInRight">
+            <div class="influencers-header">
+                <h1>Influencers</h1>
+                <p>Browse {{ influencers|length }} creators by niche, view average ratings, and find the perfect match for your campaign.</p>
+            </div>
+
+            <div class="influencers-grid">
+                {% for influencer in influencers %}
+                <div class="influencer-card animate__animated animate__fadeInUp" data-niche="{{ influencer.niche|default:'multi-niche' }}" data-platforms="{% if influencer.instagram_handle %}instagram{% endif %} {% if influencer.tiktok_handle %}tiktok{% endif %} {% if influencer.youtube_handle %}youtube{% endif %}">
+                    <div class="card-header">
+                        {% if influencer.profile_picture %}
+                        <img src="{{ influencer.profile_picture.url }}" alt="{{ influencer.username }}" class="influencer-image">
+                        {% else %}
+                        <div class="default-avatar">{{ influencer.username|first|upper }}</div>
+                        {% endif %}
+                        <div class="influencer-name">{{ influencer.username }}</div>
+                        <div class="influencer-location">{{ influencer.location|default:"Location not specified" }}</div>
+                        <div class="influencer-niche">{{ influencer.niche|default:"Multi-Niche" }}</div>
+
+                        <div class="rating">
+                            <div class="stars">
+                                ★★★★★
+                            </div>
+                            <span class="rating-value">4.{{ forloop.counter0|add:1 }}</span>
+                        </div>
+
+                        <div class="followers-info">
+                            <span>{{ influencer.followers_count|default:"0"|floatformat:"0" }} followers</span>
+                        </div>
+
+                        <div class="social-platforms">
+                            {% if influencer.instagram_handle %}
+                            <div class="platform-icon" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            {% endif %}
+                            {% if influencer.tiktok_handle %}
+                            <div class="platform-icon" title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </div>
+                            {% endif %}
+                            {% if influencer.youtube_handle %}
+                            <div class="platform-icon" title="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="#" class="action-btn btn-invite">Invite to Campaign</a>
+                        <a href="#" class="action-btn btn-save">Save</a>
+                        <a href="{% url 'influencer_profile' influencer.id %}" class="action-btn btn-view">View Profile</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="no-influencers" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: rgba(51, 51, 51, 0.7); background: rgba(255, 255, 255, 0.9); border-radius: 20px; border: 1px solid rgba(138, 91, 168, 0.2);">
+                    <h3>No influencers found</h3>
+                    <p>Try adjusting your filters or search criteria.</p>
+                    <p><em>Note: Make sure you have created some influencer accounts in the system.</em></p>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Optional: Shooting Stars can be removed or kept as subtle decoration -->
+    <!-- <div class="shooting-stars" style="display: none;">
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+    </div> -->
+
+    <script>
+        // Shooting Stars Animation
+        const shootingStarsContainer = document.querySelector('.shooting-stars');
+        const starCount = 20;
+
+        // Create shooting stars dynamically
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'shooting_star';
+            star.style.animationDelay = `${i * 150}ms`;
+
+            // Random positioning
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+
+            shootingStarsContainer.appendChild(star);
+        }
+
+        // Enhanced filtering functionality
+        document.querySelectorAll('.niche-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const niche = this.textContent.toLowerCase();
+
+                // Update active state
+                document.querySelectorAll('.niche-item').forEach(i => i.classList.remove('filter-active'));
+                this.classList.add('filter-active');
+
+                // Redirect to filtered view
+                const currentUrl = new URL(window.location);
+                if (niche === 'all') {
+                    currentUrl.searchParams.delete('niche');
+                } else {
+                    currentUrl.searchParams.set('niche', niche);
+                }
+                window.location.href = currentUrl.toString();
+            });
+        });
+
+        // Search functionality
+        const searchBox = document.querySelector('.search-box');
+        if (searchBox) {
+            searchBox.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    const currentUrl = new URL(window.location);
+                    if (query) {
+                        currentUrl.searchParams.set('search', query);
+                    } else {
+                        currentUrl.searchParams.delete('search');
+                    }
+                    window.location.href = currentUrl.toString();
+                }
+            });
+        }
+
+        // Initialize active filters on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUrl = new URL(window.location);
+            const currentNiche = currentUrl.searchParams.get('niche');
+            const currentPlatform = currentUrl.searchParams.get('platform');
+            const searchQuery = currentUrl.searchParams.get('search');
+
+            // Set active niche filter
+            if (currentNiche) {
+                document.querySelectorAll('.niche-item').forEach(item => {
+                    if (item.textContent.toLowerCase() === currentNiche) {
+                        item.classList.add('filter-active');
+                    }
+                });
+            } else {
+                // Set 'All' as active by default
+                document.querySelectorAll('.niche-item').forEach(item => {
+                    if (item.textContent.toLowerCase() === 'all') {
+                        item.classList.add('filter-active');
+                    }
+                });
+            }
+
+            // Set search box value
+            if (searchQuery && searchBox) {
+                searchBox.value = searchQuery;
+            }
+        });
+    </script>
+   </body>
+   </html>

@@ -26,6 +26,10 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('how-it-works/', views.how_it_works, name='how_it_works'),
     path('pricing/', views.pricing, name='pricing'),
+    path('success-stories/', views.success_stories, name='success_stories'),
+    path('influencers/', views.influencers, name='influencers'),
+    path('influencers/profile/<int:influencer_id>/', views.influencer_profile, name='influencer_profile'),
+    path('brands/', views.brands, name='brands'),
     path('auth/', include('authentication.urls')),
     path('campaigns/', include('campaigns.urls')),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
@@ -35,5 +39,5 @@ urlpatterns = [
 
 # Serve static files during development
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0] if settings.STATICFILES_DIRS else '')
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
