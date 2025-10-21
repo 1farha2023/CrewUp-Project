@@ -285,10 +285,6 @@ If you discover a bug, please create an issue on GitHub with:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👨‍💻 Authors
-
-- **Farhana Hoque Mahima** - [@1farha2023](https://github.com/1farha2023)
-
 ## 🙏 Acknowledgments
 
 - Django community for excellent documentation
@@ -301,6 +297,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For support and questions:
 - Create an issue on GitHub
 - Email: farhanahoquemahima@gmail.com
+- **Farhana Hoque Mahima**- [@1farha2023](https://github.com/1farha2023)
 
 ## 🗺️ Roadmap
 
