@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewUp - Connect Brands with Influencers</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- p5.js for liquid canvas animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+
+    <style>
+        :root {
+            /* Purple-Pink Color Palette */
+            --amethyst: #ba52daff;
+            --lavender-floral: #b66ee8ff;
+            --heliotrope: #c879ffff;
+            --heliotrope-2: #d689ffff;
+            --violet-web: #e498ffff;
+            --mauve: #f2a8ffff;
+            --mauve-2: #ffb7ffff;
+            --mauve-3: #ffc4ffff;
+            --mauve-4: #ffc9ffff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: boryder-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(176, 36, 218, 0.8), rgba(106, 137, 204, 0.8)),
+                        url('/static/images/templates/landing.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #fcfcfcff;
+            min-height: 100vh;
+            position: relative;
+        }
+
+
+        /* Clean, modern animation keyframes */
+
+        /* Ensure content stays above the overlay */
+        header, main, section, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #f5f1f1ff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-toggle:hover {
+            opacity: 0.8;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-menu a {
+            color: #f055af9a;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background-color: rgba(224, 208, 235, 0.1);
+            color: #cd9af0ff;
+        }
+
+        /* Responsive navigation */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        /* Header Styles */
+        header {
+            padding: 1rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: bold;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: clamp(1rem, 2.5vw, 2rem);
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .nav-btn {
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+            border-radius: 25px;
+            font-size: clamp(0.875rem, 2vw, 1rem);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, var(--heliotrope), var(--lavender-floral));
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(200, 121, 255, 0.3);
+        }
+
+        .nav-btn-primary:hover {
+            background: linear-gradient(135deg, var(--heliotrope-2), var(--amethyst));
+            box-shadow: 0 6px 20px rgba(200, 121, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Banner */
+        .main-banner {
+            padding: clamp(6rem, 12vw, 8rem) clamp(1rem, 5vw, 5%) clamp(2rem, 6vw, 4rem);
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-banner h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            line-height: 1.2;
+        }
+
+        .main-banner p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            max-width: min(800px, 90vw);
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 5%);
+            text-align: center;
+            background: linear-gradient(135deg,
+                rgba(166, 110, 232, 0.15) 0%,
+                rgba(200, 121, 255, 0.1) 100%);
+        }
+
+        .intro-section h2 {
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            margin-bottom: clamp(0.75rem, 2vw, 1rem);
+        }
+
+        .intro-section p {
+            font-size: clamp(0.875rem, 2.5vw, 1.1rem);
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            max-width: min(600px, 85vw);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: clamp(1rem, 4vw, 3rem);
+            margin-top: clamp(1.5rem, 4vw, 3rem);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            min-width: clamp(120px, 20vw, 200px);
+        }
+
+        .stat-number {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item div:last-child {
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+        }
+
+        /* Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: clamp(0.75rem, 2vw, 1rem);
+            justify-content: center;
+            margin-top: clamp(1.5rem, 4vw, 2rem);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: clamp(0.75rem, 2.5vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+            border-radius: 30px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--violet-web), var(--heliotrope));
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(228, 152, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--mauve), var(--pink-lavender));
+            box-shadow: 0 6px 20px rgba(242, 168, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced glassmorphism effect */
+        .glass-card {
+            background: linear-gradient(135deg,
+                rgba(166, 110, 232, 0.15) 0%,
+                rgba(200, 121, 255, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(230, 152, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(166, 110, 232, 0.2);
+        }
+
+        .glass-card:hover {
+            background: linear-gradient(135deg,
+                rgba(230, 152, 255, 0.25) 0%,
+                rgba(242, 168, 255, 0.15) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(200, 121, 255, 0.4);
+            border-color: rgba(255, 183, 255, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            padding: clamp(1.5rem, 4vw, 2rem) clamp(1rem, 5vw, 5%);
+            background: rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        footer ul {
+            display: flex;
+            justify-content: center;
+            gap: clamp(1rem, 3vw, 2rem);
+            list-style: none;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: #FFFFFF;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+            white-space: nowrap;
+        }
+
+        footer a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            opacity: 0.6;
+            font-size: clamp(0.7rem, 2vw, 0.8rem);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Enhanced glassmorphism effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animation delays for staggered effect */
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+        .animate-delay-500 { animation-delay: 0.5s; }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            .animate__animated {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .particle {
+                animation: none !important;
+            }
+
+            .connection-line {
+                display: none !important;
+            }
+        }
+
+        /* Performance optimizations */
+        .main-banner * {
+            will-change: transform, opacity;
+        }
+
+        /* Optimize animations for mobile */
+        @media (max-width: 768px) {
+            .animate-delay-100 { animation-delay: 0.05s; }
+            .animate-delay-200 { animation-delay: 0.1s; }
+            .animate-delay-300 { animation-delay: 0.15s; }
+
+            /* Reduce particle count on mobile for better performance */
+            .particle-canvas {
+                opacity: 0.7;
+            }
+        }
+
+        /* Very small screens - minimal particles */
+        @media (max-width: 480px) {
+            .particle-canvas {
+                opacity: 0.5;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover {
+                transform: none; /* Disable hover effects on touch devices */
+            }
+
+            .glass-card:hover {
+                transform: none;
+            }
+
+            /* Increase touch target size */
+            .btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .nav-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .main-banner h1 {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            }
+
+            .btn-primary {
+                border: 2px solid #FFFFFF;
+            }
+
+            .btn-secondary {
+                border-width: 3px;
+            }
+        }
+
+        /* Dark mode support (if needed in future) */
+        @media (prefers-color-scheme: dark) {
+            /* Dark mode styles can be added here if needed */
+        }
+
+        /* Landscape orientation on mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .main-banner {
+                min-height: 70vh;
+                padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 5vw, 5%);
+            }
+
+            .main-banner h1 {
+                font-size: clamp(1.5rem, 6vw, 2rem);
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                min-width: 100px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .main-banner {
+                background: none !important;
+                color: #000000 !important;
+            }
+
+            .animate__animated {
+                animation: none !important;
+            }
+
+            .btn {
+                display: none; /* Hide buttons in print */
+            }
+        }
+
+        /* Futuristic Particle System */
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, #a564d3ff 0%, #e498ffff 70%, transparent 100%);
+            border-radius: 50%;
+            box-shadow:
+                0 0 6px rgba(182, 110, 232, 0.8),
+                0 0 12px rgba(230, 152, 255, 0.6),
+                0 0 18px rgba(200, 121, 255, 0.4);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .particle.connected {
+            background: radial-gradient(circle, #ff6b9d 0%, #c44569 70%, transparent 100%);
+            box-shadow:
+                0 0 8px rgba(255, 107, 157, 1),
+                0 0 16px rgba(255, 107, 157, 0.8),
+                0 0 24px rgba(255, 107, 157, 0.6);
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(182, 110, 232, 0.6), transparent);
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+
+        .mouse-attractor {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(182, 110, 232, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            will-change: transform;
+            transition: opacity 0.3s ease;
+        }
+
+        .mouse-attractor.active {
+            opacity: 1;
+        }
+
+        /* Particle pulse animation */
+        @keyframes particlePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        .particle.pulse {
+            animation: particlePulse 2s ease-in-out infinite;
+        }
+
+        /* Connection fade animation */
+        @keyframes connectionFade {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+        }
+
+        .connection-line.fade {
+            animation: connectionFade 1.5s ease-in-out;
+        }
+
+        /* Mouse interaction area */
+        .interaction-zone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Liquid Canvas Animation */
+        #liquidCanvas {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            pointer-events: none !important;
+            z-index: 0 !important;
+            opacity: 0.7 !important;
+            mix-blend-mode: multiply !important;
+        }
+
+        /* Liquid Metal Animation System */
+        .liquid-metal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .liquid-metal-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                rgba(166, 100, 211, 0.15) 0%,
+                rgba(200, 121, 255, 0.1) 25%,
+                rgba(230, 152, 255, 0.08) 50%,
+                rgba(255, 183, 255, 0.12) 75%,
+                rgba(214, 137, 255, 0.1) 100%
+            );
+            opacity: 0.6;
+        }
+
+        .liquid-metal-layer.layer-1 {
+            background:
+                radial-gradient(circle at 20% 30%, rgba(166, 100, 211, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(230, 152, 255, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(200, 121, 255, 0.15) 0%, rgba(255, 183, 255, 0.1) 100%);
+            animation: liquidMetalFlow1 20s ease-in-out infinite;
+        }
+
+        .liquid-metal-layer.layer-2 {
+            background:
+                radial-gradient(circle at 60% 20%, rgba(255, 183, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 30% 80%, rgba(214, 137, 255, 0.2) 0%, transparent 45%),
+                linear-gradient(45deg, rgba(166, 100, 211, 0.12) 0%, rgba(230, 152, 255, 0.08) 100%);
+            animation: liquidMetalFlow2 25s ease-in-out infinite reverse;
+        }
+
+        .liquid-metal-layer.layer-3 {
+            background:
+                radial-gradient(circle at 70% 60%, rgba(200, 121, 255, 0.2) 0%, transparent 35%),
+                radial-gradient(circle at 10% 40%, rgba(255, 206, 255, 0.15) 0%, transparent 40%),
+                linear-gradient(225deg, rgba(230, 152, 255, 0.1) 0%, rgba(166, 100, 211, 0.08) 100%);
+            animation: liquidMetalFlow3 30s ease-in-out infinite;
+        }
+
+        .liquid-metal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(135deg,
+                    rgba(166, 100, 211, 0.05) 0%,
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(255, 183, 255, 0.03) 100%
+                );
+            animation: liquidMetalShimmer 15s ease-in-out infinite;
+            mix-blend-mode: overlay;
+        }
+
+        /* Liquid Metal Keyframes */
+        @keyframes liquidMetalFlow1 {
+            0% {
+                transform: translateX(-10%) translateY(-5%) rotate(0deg) scale(1);
+                filter: blur(0px) hue-rotate(0deg);
+            }
+            25% {
+                transform: translateX(5%) translateY(-2%) rotate(90deg) scale(1.05);
+                filter: blur(0.5px) hue-rotate(45deg);
+            }
+            50% {
+                transform: translateX(15%) translateY(8%) rotate(180deg) scale(0.95);
+                filter: blur(0.2px) hue-rotate(90deg);
+            }
+            75% {
+                transform: translateX(-5%) translateY(3%) rotate(270deg) scale(1.02);
+                filter: blur(0.3px) hue-rotate(135deg);
+            }
+            100% {
+                transform: translateX(-10%) translateY(-5%) rotate(360deg) scale(1);
+                filter: blur(0px) hue-rotate(180deg);
+            }
+        }
+
+        @keyframes liquidMetalFlow2 {
+            0% {
+                transform: translateX(8%) translateY(-3%) rotate(0deg) scale(1.02);
+                filter: blur(0.2px) hue-rotate(180deg);
+            }
+            20% {
+                transform: translateX(-12%) translateY(7%) rotate(-72deg) scale(0.98);
+                filter: blur(0.4px) hue-rotate(225deg);
+            }
+            40% {
+                transform: translateX(6%) translateY(-8%) rotate(-144deg) scale(1.03);
+                filter: blur(0.1px) hue-rotate(270deg);
+            }
+            60% {
+                transform: translateX(-4%) translateY(5%) rotate(-216deg) scale(0.97);
+                filter: blur(0.3px) hue-rotate(315deg);
+            }
+            80% {
+                transform: translateX(10%) translateY(-6%) rotate(-288deg) scale(1.01);
+                filter: blur(0.2px) hue-rotate(0deg);
+            }
+            100% {
+                transform: translateX(8%) translateY(-3%) rotate(-360deg) scale(1.02);
+                filter: blur(0.2px) hue-rotate(180deg);
+            }
+        }
+
+        @keyframes liquidMetalFlow3 {
+            0% {
+                transform: translateX(-5%) translateY(4%) rotate(0deg) scale(0.98);
+                filter: blur(0.1px) hue-rotate(90deg);
+            }
+            30% {
+                transform: translateX(12%) translateY(-7%) rotate(108deg) scale(1.04);
+                filter: blur(0.3px) hue-rotate(135deg);
+            }
+            60% {
+                transform: translateX(-8%) translateY(9%) rotate(216deg) scale(0.96);
+                filter: blur(0.2px) hue-rotate(180deg);
+            }
+            100% {
+                transform: translateX(-5%) translateY(4%) rotate(360deg) scale(0.98);
+                filter: blur(0.1px) hue-rotate(90deg);
+            }
+        }
+
+        @keyframes liquidMetalShimmer {
+            0% {
+                opacity: 0.3;
+                transform: translateX(-20%) skewX(0deg);
+            }
+            25% {
+                opacity: 0.6;
+                transform: translateX(-10%) skewX(5deg);
+            }
+            50% {
+                opacity: 0.4;
+                transform: translateX(0%) skewX(0deg);
+            }
+            75% {
+                opacity: 0.7;
+                transform: translateX(10%) skewX(-5deg);
+            }
+            100% {
+                opacity: 0.3;
+                transform: translateX(-20%) skewX(0deg);
+            }
+        }
+
+        /* Interactive Liquid Metal Effects */
+        .glass-card:hover ~ .liquid-metal-container .liquid-metal-layer,
+        .btn:hover ~ .liquid-metal-container .liquid-metal-layer,
+        .nav-btn:hover ~ .liquid-metal-container .liquid-metal-layer {
+            animation-duration: 8s;
+            filter: brightness(1.2) saturate(1.3);
+        }
+
+        .glass-card:hover ~ .liquid-metal-container .liquid-metal-overlay,
+        .btn:hover ~ .liquid-metal-container .liquid-metal-overlay,
+        .nav-btn:hover ~ .liquid-metal-container .liquid-metal-overlay {
+            opacity: 0.8;
+            animation-duration: 4s;
+        }
+
+        /* Responsive Liquid Animation Effects */
+        @media (max-width: 768px) {
+            #liquidCanvas {
+                opacity: 0.5 !important;
+            }
+
+            .liquid-metal-layer {
+                opacity: 0.4;
+            }
+
+            .liquid-metal-layer.layer-1 {
+                animation-duration: 25s;
+            }
+
+            .liquid-metal-layer.layer-2 {
+                animation-duration: 30s;
+            }
+
+            .liquid-metal-layer.layer-3 {
+                animation-duration: 35s;
+            }
+
+            .liquid-metal-overlay {
+                animation-duration: 20s;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #liquidCanvas {
+                opacity: 0.3 !important;
+            }
+
+            .liquid-metal-layer {
+                opacity: 0.3;
+            }
+
+            .liquid-metal-layer.layer-1 {
+                animation-duration: 30s;
+            }
+
+            .liquid-metal-layer.layer-2 {
+                animation-duration: 35s;
+            }
+
+            .liquid-metal-layer.layer-3 {
+                animation-duration: 40s;
+            }
+
+            .liquid-metal-overlay {
+                animation-duration: 25s;
+            }
+        }
+
+        /* Reduced motion preferences for liquid metal */
+        @media (prefers-reduced-motion: reduce) {
+            .liquid-metal-layer,
+            .liquid-metal-overlay {
+                animation: none !important;
+                opacity: 0.2;
+            }
+        }
+
+        /* High contrast mode support for liquid metal */
+        @media (prefers-contrast: high) {
+            .liquid-metal-layer {
+                opacity: 0.8;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .liquid-metal-overlay {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Futuristic Particle System -->
+    <div class="particle-canvas" id="particleCanvas"></div>
+    <div class="interaction-zone" id="interactionZone"></div>
+
+    <!-- Liquid Canvas Animation -->
+    <canvas id="liquidCanvas"></canvas>
+
+    <!-- Liquid Metal Animation System -->
+    <div class="liquid-metal-container">
+        <div class="liquid-metal-layer layer-1"></div>
+        <div class="liquid-metal-layer layer-2"></div>
+        <div class="liquid-metal-layer layer-3"></div>
+        <div class="liquid-metal-overlay"></div>
+    </div>
+
+    <header>
+        <a href="/" class="logo">CrewUp</a>
+        <nav>
+            <ul>
+                <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+                <li><a href="{% url 'influencers' %}">Influencers</a></li>
+                <li><a href="{% url 'brands' %}">Brands</a></li>
+                <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+                <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'success_stories' %}">Success Stories</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary">Sign In</a>
+                <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary">Get Started</a>
+            </div>
+        </nav>
+        <!-- Mobile menu toggle button -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+            <li><a href="{% url 'influencers' %}">Influencers</a></li>
+            <li><a href="{% url 'brands' %}">Brands</a></li>
+            <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+            <li><a href="{% url 'pricing' %}">Pricing</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'success_stories' %}">Success Stories</a></li>
+        </ul>
+        <div style="padding: 1rem; border-top: 1px solid rgba(0,0,0,0.1); margin-top: 1rem;">
+            <a href="{% url 'authentication:login' %}" class="nav-btn nav-btn-secondary" style="display: inline-block; margin-bottom: 0.5rem;">Sign In</a>
+            <a href="{% url 'authentication:signup' %}" class="nav-btn nav-btn-primary" style="display: inline-block;">Get Started</a>
+        </div>
+    </div>
+
+    <section class="main-banner animate__animated animate__backInUp" role="banner" aria-label="Main banner section">
+        <h1 class="animate__animated animate__backInUp animate-delay-100" id="main-heading">Connect with the Right Influencers</h1>
+        <p class="animate__animated animate__fadeInUp animate-delay-200" aria-describedby="main-heading">
+            Join thousands of brands and influencers creating impactful campaigns and driving real results through authentic partnerships.
+        </p>
+        <div class="cta-buttons animate__animated animate__fadeInUp animate-delay-300" role="group" aria-label="Call to action buttons">
+            <a href="{% url 'authentication:signup' %}" class="btn btn-primary" aria-describedby="signup-description">
+                <span class="sr-only" id="signup-description">Join the Platform</span>
+                Join the Platform
+            </a>
+            <a href="{% url 'authentication:login' %}" class="btn btn-secondary" aria-describedby="login-description">
+                <span class="sr-only" id="login-description">Log In</span>
+                Log In
+            </a>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <h2>Transforming Influencer Marketing</h2>
+        <p>CrewUp connects brands with authentic influencers to create meaningful partnerships and drive real engagement.</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <div>Successful Campaigns</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div>Active Influencers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div>Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Users Section -->
+    <section class="py-8 md:py-12 lg:py-16" style="background: linear-gradient(135deg, rgba(166, 110, 232, 0.1) 0%, rgba(200, 121, 255, 0.05) 100%);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-white">Featured Creators</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {% for user in featured_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-white/80 mb-2">
+                            <span class="bg-purple-600 px-2 py-1 rounded-full text-sm">{{ user.user_type|title }}</span>
+                        </p>
+                        {% if user.user_type == 'influencer' %}
+                        <p class="text-white/70 text-sm mb-3">{{ user.niche|default:"Multi-Niche" }}</p>
+                        {% elif user.user_type == 'brand' %}
+                        <p class="text-white/70 text-sm mb-3">{{ user.industry|default:"Various Industries" }}</p>
+                        {% endif %}
+                        <a href="#" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-300" style="background: linear-gradient(135deg, var(--heliotrope), var(--mauve)); box-shadow: 0 4px 12px rgba(200, 121, 255, 0.3);" onclick="alert('Profile view coming soon!')" onmouseover="this.style.background='linear-gradient(135deg, var(--mauve), var(--pink-lavender))'; this.style.boxShadow='0 6px 16px rgba(242, 168, 255, 0.4)'" onmouseout="this.style.background='linear-gradient(135deg, var(--heliotrope), var(--mauve))'; this.style.boxShadow='0 4px 12px rgba(200, 121, 255, 0.3)'">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Instagram Users Section -->
+    <section class="py-8 md:py-12 lg:py-16" style="background: linear-gradient(135deg, rgba(255, 183, 255, 0.15) 0%, rgba(255, 206, 255, 0.1) 100%);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center mb-8 md:mb-12">
+                <i class="fab fa-instagram text-2xl sm:text-3xl md:text-4xl text-pink-500 mr-2 md:mr-4"></i>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">Instagram Creators</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {% for user in instagram_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-pink-400 to-purple-400 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-pink-300 mb-2">@{{ user.instagram_handle }}</p>
+                        <p class="text-white/70 text-sm mb-3">{{ user.followers_count|default:"0" }} followers</p>
+                        <a href="#" class="inline-block bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:from-pink-600 hover:to-purple-600 transition-all duration-300" style="background: linear-gradient(135deg, var(--mauve-2), var(--heliotrope)); box-shadow: 0 4px 12px rgba(255, 183, 255, 0.3);" onclick="alert('Profile view coming soon!')" onmouseover="this.style.background='linear-gradient(135deg, var(--mauve-3), var(--violet-web))'; this.style.boxShadow='0 6px 16px rgba(255, 196, 255, 0.4)'" onmouseout="this.style.background='linear-gradient(135deg, var(--mauve-2), var(--heliotrope))'; this.style.boxShadow='0 4px 12px rgba(255, 183, 255, 0.3)'">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- TikTok Users Section -->
+    <section class="py-8 md:py-12 lg:py-16" style="background: linear-gradient(135deg, rgba(214, 137, 255, 0.12) 0%, rgba(230, 152, 255, 0.08) 100%);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center mb-8 md:mb-12">
+                <i class="fab fa-tiktok text-2xl sm:text-3xl md:text-4xl text-black mr-2 md:mr-4 bg-white rounded-full p-2"></i>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white">TikTok Creators</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {% for user in tiktok_users %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl">
+                    <div class="text-center">
+                        {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}"
+                             class="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-white/30">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full mx-auto mb-4 bg-gradient-to-br from-black to-gray-800 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ user.username|first|upper }}
+                        </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold text-white mb-2">{{ user.username }}</h3>
+                        <p class="text-gray-300 mb-2">@{{ user.tiktok_handle }}</p>
+                        <p class="text-white/70 text-sm mb-3">{{ user.followers_count|default:"0" }} followers</p>
+                        <a href="#" class="inline-block bg-gradient-to-r from-gray-800 to-black text-white px-6 py-2 rounded-full text-sm font-medium hover:from-gray-900 hover:to-gray-900 transition-all duration-300" style="background: linear-gradient(135deg, var(--heliotrope-2), var(--violet-web)); box-shadow: 0 4px 12px rgba(214, 137, 255, 0.3);" onclick="alert('Profile view coming soon!')" onmouseover="this.style.background='linear-gradient(135deg, var(--mauve), var(--heliotrope))'; this.style.boxShadow='0 6px 16px rgba(242, 168, 255, 0.4)'" onmouseout="this.style.background='linear-gradient(135deg, var(--heliotrope-2), var(--violet-web))'; this.style.boxShadow='0 4px 12px rgba(214, 137, 255, 0.3)'">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-8 md:py-12 lg:py-16" style="background: linear-gradient(135deg, rgba(178, 110, 232, 0.13) 0%, rgba(214, 137, 255, 0.09) 100%);">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-white">Explore Categories</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {% for category_code, category_name in categories %}
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 animate__animated animate__fadeInUp hover:scale-105 hover:shadow-2xl text-center cursor-pointer">
+                    <div class="text-6xl mb-4">
+                        {% if category_code == 'fashion' %}
+                        👘
+                        {% elif category_code == 'tech' %}
+                        💻
+                        {% elif category_code == 'food' %}
+                        🍵
+                        {% elif category_code == 'lifestyle' %}
+                        🧗‍♂️
+                        {% elif category_code == 'travel' %}
+                        🗺
+                        
+                        {% else %}
+                        📱
+                        {% endif %}
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">{{ category_name }}</h3>
+                    <p class="text-white/70">Discover amazing creators in {{ category_name|lower }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <ul>
+            <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            <li><a href="{% url 'terms_of_service' %}">Terms of Service</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+              <li><a href="{% url 'about' %}">About Us</a></li>
+        </ul>
+        <div class="copyright">© 2025 CrewUp. All rights reserved.</div>
+    </footer>
+
+    <!-- Futuristic Particle System JavaScript -->
+    <script>
+        (function() {
+            'use strict';
+
+            // Particle System Class
+            class ParticleSystem {
+                constructor() {
+                    this.canvas = document.getElementById('particleCanvas');
+                    this.ctx = this.canvas.getContext('2d');
+                    this.particles = [];
+                    this.connections = [];
+                    this.mouseAttractor = null;
+                    this.animationId = null;
+                    this.isRunning = false;
+
+                    this.config = {
+                        particleCount: this.getOptimalParticleCount(),
+                        maxSpeed: 1.5,
+                        connectionDistance: 120,
+                        mouseAttractionRadius: 150,
+                        mouseAttractionStrength: 0.3,
+                        friction: 0.98,
+                        pulseFrequency: 0.02
+                    };
+
+                    // Ensure config is a proper object
+                    this.config = Object.assign({}, this.config);
+
+                    this.colors = [
+                        '#a564d3ff', '#b66ee8ff', '#c879ffff', '#d689ffff',
+                        '#e498ffff', '#f2a8ffff', '#ffb7ffff', '#ff6b9d'
+                    ];
+
+                    this.init();
+                }
+
+                init() {
+                    try {
+                        if (!this.canvas) {
+                            console.warn('Canvas element not found');
+                            return;
+                        }
+
+                        this.resizeCanvas();
+                        this.createParticles();
+                        this.setupEventListeners();
+                        this.animate();
+
+                        // Handle visibility change
+                        document.addEventListener('visibilitychange', () => {
+                            if (document.hidden) {
+                                this.pause();
+                            } else {
+                                this.resume();
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error initializing particle system:', error);
+                    }
+                }
+
+                getOptimalParticleCount() {
+                    const screenArea = window.innerWidth * window.innerHeight;
+                    const devicePixelRatio = window.devicePixelRatio || 1;
+
+                    // Base count adjusted for screen size and performance
+                    let baseCount = Math.floor(screenArea / 15000);
+
+                    // Reduce for mobile devices
+                    if (window.innerWidth <= 768) {
+                        baseCount = Math.floor(baseCount * 0.6);
+                    }
+
+                    // Reduce for very small screens
+                    if (window.innerWidth <= 480) {
+                        baseCount = Math.floor(baseCount * 0.5);
+                    }
+
+                    // Cap for performance
+                    return Math.min(Math.max(baseCount, 20), 100);
+                }
+
+                resizeCanvas() {
+                    try {
+                        if (!this.canvas) return;
+
+                        const rect = this.canvas.getBoundingClientRect();
+                        const devicePixelRatio = window.devicePixelRatio || 1;
+
+                        this.canvas.width = rect.width * devicePixelRatio;
+                        this.canvas.height = rect.height * devicePixelRatio;
+
+                        if (this.ctx) {
+                            this.ctx.scale(devicePixelRatio, devicePixelRatio);
+                        }
+
+                        this.canvas.style.width = rect.width + 'px';
+                        this.canvas.style.height = rect.height + 'px';
+                    } catch (error) {
+                        console.warn('Error resizing canvas:', error);
+                    }
+                }
+
+                createParticles() {
+                    this.particles = [];
+                    for (let i = 0; i < this.config.particleCount; i++) {
+                        this.particles.push({
+                            x: Math.random() * this.canvas.width / window.devicePixelRatio,
+                            y: Math.random() * this.canvas.height / window.devicePixelRatio,
+                            vx: (Math.random() - 0.5) * this.config.maxSpeed,
+                            vy: (Math.random() - 0.5) * this.config.maxSpeed,
+                            size: Math.random() * 3 + 2,
+                            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+                            pulsePhase: Math.random() * Math.PI * 2,
+                            baseOpacity: 0.6 + Math.random() * 0.4,
+                            id: i
+                        });
+                    }
+                }
+
+                setupEventListeners() {
+                    const interactionZone = document.getElementById('interactionZone');
+
+                    interactionZone.addEventListener('mousemove', (e) => {
+                        const rect = this.canvas.getBoundingClientRect();
+                        this.mouseAttractor = {
+                            x: e.clientX - rect.left,
+                            y: e.clientY - rect.top,
+                            strength: this.config.mouseAttractionStrength
+                        };
+                    });
+
+                    interactionZone.addEventListener('mouseleave', () => {
+                        this.mouseAttractor = null;
+                    });
+
+                    // Touch support for mobile devices
+                    interactionZone.addEventListener('touchmove', (e) => {
+                        e.preventDefault();
+                        const rect = this.canvas.getBoundingClientRect();
+                        const touch = e.touches[0];
+                        this.mouseAttractor = {
+                            x: touch.clientX - rect.left,
+                            y: touch.clientY - rect.top,
+                            strength: this.config.mouseAttractionStrength * 1.5 // Stronger on touch
+                        };
+                    });
+
+                    interactionZone.addEventListener('touchend', () => {
+                        this.mouseAttractor = null;
+                    });
+
+                    window.addEventListener('resize', this.debounce(() => {
+                        this.resizeCanvas();
+                        // Recalculate particle count on resize
+                        const newCount = this.getOptimalParticleCount();
+                        if (Math.abs(newCount - this.config.particleCount) > 10) {
+                            this.config = {
+                                ...this.config,
+                                particleCount: newCount
+                            };
+                            this.createParticles();
+                        }
+                    }, 250));
+                }
+
+                updateParticles() {
+                    try {
+                        if (!this.particles || !Array.isArray(this.particles)) {
+                            return;
+                        }
+
+                        this.particles.forEach(particle => {
+                            if (!particle || typeof particle.x !== 'number' || typeof particle.y !== 'number') {
+                                return;
+                            }
+
+                            // Apply mouse attraction
+                            if (this.mouseAttractor && typeof this.mouseAttractor.x === 'number') {
+                                const dx = this.mouseAttractor.x - particle.x;
+                                const dy = this.mouseAttractor.y - particle.y;
+                                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                                if (distance < this.config.mouseAttractionRadius && distance > 0) {
+                                    const force = (this.config.mouseAttractionRadius - distance) / this.config.mouseAttractionRadius;
+                                    particle.vx += (dx / distance) * force * this.mouseAttractor.strength;
+                                    particle.vy += (dy / distance) * force * this.mouseAttractor.strength;
+                                }
+                            }
+
+                            // Update position
+                            particle.x += particle.vx || 0;
+                            particle.y += particle.vy || 0;
+
+                            // Boundary collision with bounce
+                            const maxWidth = this.canvas.width / window.devicePixelRatio;
+                            const maxHeight = this.canvas.height / window.devicePixelRatio;
+
+                            if (particle.x < 0 || particle.x > maxWidth) {
+                                particle.vx = -(particle.vx || 0) * 0.8;
+                                particle.x = Math.max(0, Math.min(maxWidth, particle.x));
+                            }
+                            if (particle.y < 0 || particle.y > maxHeight) {
+                                particle.vy = -(particle.vy || 0) * 0.8;
+                                particle.y = Math.max(0, Math.min(maxHeight, particle.y));
+                            }
+
+                            // Apply friction
+                            particle.vx = (particle.vx || 0) * this.config.friction;
+                            particle.vy = (particle.vy || 0) * this.config.friction;
+
+                            // Update pulse phase
+                            particle.pulsePhase = (particle.pulsePhase || 0) + this.config.pulseFrequency;
+                        });
+                    } catch (error) {
+                        console.warn('Error updating particles:', error);
+                    }
+                }
+
+                checkCollisions() {
+                    for (let i = 0; i < this.particles.length; i++) {
+                        for (let j = i + 1; j < this.particles.length; j++) {
+                            const p1 = this.particles[i];
+                            const p2 = this.particles[j];
+
+                            const dx = p2.x - p1.x;
+                            const dy = p2.y - p1.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < 10) { // Collision threshold
+                                // Swap velocities for realistic collision
+                                const tempVx = p1.vx;
+                                const tempVy = p1.vy;
+                                p1.vx = p2.vx * 0.8;
+                                p1.vy = p2.vy * 0.8;
+                                p2.vx = tempVx * 0.8;
+                                p2.vy = tempVy * 0.8;
+
+                                // Separate particles to prevent sticking
+                                const separation = 1;
+                                p1.x -= dx * separation / distance;
+                                p1.y -= dy * separation / distance;
+                                p2.x += dx * separation / distance;
+                                p2.y += dy * separation / distance;
+                            }
+                        }
+                    }
+                }
+
+                updateConnections() {
+                    try {
+                        this.connections = [];
+
+                        if (!this.particles || !Array.isArray(this.particles)) {
+                            return;
+                        }
+
+                        for (let i = 0; i < this.particles.length; i++) {
+                            for (let j = i + 1; j < this.particles.length; j++) {
+                                const p1 = this.particles[i];
+                                const p2 = this.particles[j];
+
+                                if (!p1 || !p2 || typeof p1.x !== 'number' || typeof p1.y !== 'number') {
+                                    continue;
+                                }
+
+                                const dx = p2.x - p1.x;
+                                const dy = p2.y - p1.y;
+                                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                                if (distance < this.config.connectionDistance && distance > 0) {
+                                    this.connections.push({
+                                        x1: p1.x,
+                                        y1: p1.y,
+                                        x2: p2.x,
+                                        y2: p2.y,
+                                        opacity: (1 - distance / this.config.connectionDistance) * 0.3,
+                                        distance: distance
+                                    });
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Error updating connections:', error);
+                        this.connections = [];
+                    }
+                }
+
+                draw() {
+                    try {
+                        if (!this.ctx || !this.canvas) {
+                            return;
+                        }
+
+                        // Clear canvas
+                        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                        // Draw connections
+                        if (this.connections && Array.isArray(this.connections)) {
+                            this.connections.forEach(connection => {
+                                if (connection && typeof connection.x1 === 'number' && typeof connection.y1 === 'number') {
+                                    this.ctx.beginPath();
+                                    this.ctx.moveTo(connection.x1, connection.y1);
+                                    this.ctx.lineTo(connection.x2, connection.y2);
+                                    this.ctx.strokeStyle = `rgba(182, 110, 232, ${connection.opacity || 0})`;
+                                    this.ctx.lineWidth = 0.5;
+                                    this.ctx.stroke();
+                                }
+                            });
+                        }
+
+                        // Draw particles
+                        if (this.particles && Array.isArray(this.particles)) {
+                            this.particles.forEach(particle => {
+                                if (!particle || typeof particle.x !== 'number' || typeof particle.y !== 'number') {
+                                    return;
+                                }
+
+                                // Calculate pulsing size and opacity
+                                const pulsePhase = particle.pulsePhase || 0;
+                                const pulse = Math.sin(pulsePhase) * 0.3 + 1;
+                                const currentSize = (particle.size || 2) * pulse;
+                                const opacity = (particle.baseOpacity || 0.8) * (0.7 + pulse * 0.3);
+
+                                // Draw particle
+                                this.ctx.beginPath();
+                                this.ctx.arc(particle.x, particle.y, currentSize, 0, Math.PI * 2);
+                                const color = particle.color || '#a564d3ff';
+                                this.ctx.fillStyle = color.replace('ff', Math.floor(opacity * 255).toString(16).padStart(2, '0'));
+                                this.ctx.fill();
+
+                                // Draw glow effect
+                                const gradient = this.ctx.createRadialGradient(
+                                    particle.x, particle.y, 0,
+                                    particle.x, particle.y, currentSize * 3
+                                );
+                                gradient.addColorStop(0, color.replace('ff', '80'));
+                                gradient.addColorStop(1, 'transparent');
+
+                                this.ctx.beginPath();
+                                this.ctx.arc(particle.x, particle.y, currentSize * 3, 0, Math.PI * 2);
+                                this.ctx.fillStyle = gradient;
+                                this.ctx.fill();
+                            });
+                        }
+                    } catch (error) {
+                        console.warn('Error drawing particles:', error);
+                    }
+                }
+
+                animate() {
+                    try {
+                        if (!this.isRunning) return;
+
+                        this.updateParticles();
+                        this.checkCollisions();
+                        this.updateConnections();
+                        this.draw();
+
+                        this.animationId = requestAnimationFrame(() => this.animate());
+                    } catch (error) {
+                        console.warn('Error in animation loop:', error);
+                        // Retry animation after a short delay
+                        setTimeout(() => {
+                            if (this.isRunning) {
+                                this.animate();
+                            }
+                        }, 100);
+                    }
+                }
+
+                pause() {
+                    this.isRunning = false;
+                    if (this.animationId) {
+                        cancelAnimationFrame(this.animationId);
+                    }
+                }
+
+                resume() {
+                    if (!this.isRunning) {
+                        this.isRunning = true;
+                        this.animate();
+                    }
+                }
+
+                debounce(func, wait) {
+                    let timeout;
+                    return function executedFunction(...args) {
+                        const later = () => {
+                            clearTimeout(timeout);
+                            func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                    };
+                }
+            }
+
+            // Utility functions
+            const utils = {
+                throttle: function(func, limit) {
+                    let inThrottle;
+                    return function() {
+                        const args = arguments;
+                        const context = this;
+                        if (!inThrottle) {
+                            func.apply(context, args);
+                            inThrottle = true;
+                            setTimeout(() => inThrottle = false, limit);
+                        }
+                    };
+                },
+
+                safeQuerySelector: function(selector, context = document) {
+                    try {
+                        return context.querySelector(selector);
+                    } catch (e) {
+                        console.warn(`Invalid selector: ${selector}`, e);
+                        return null;
+                    }
+                },
+
+                prefersReducedMotion: function() {
+                    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                }
+            };
+
+            // Enhanced Intersection Observer for scroll-triggered animations
+            class AnimationObserver {
+                constructor() {
+                    this.observerOptions = {
+                        threshold: 0.1,
+                        rootMargin: '0px 0px -50px 0px'
+                    };
+
+                    this.observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                this.animateElement(entry.target);
+                            }
+                        });
+                    }, this.observerOptions);
+
+                    this.animatedElements = new Set();
+                }
+
+                animateElement(element) {
+                    if (this.animatedElements.has(element)) return;
+
+                    this.animatedElements.add(element);
+
+                    if (!utils.prefersReducedMotion()) {
+                        element.classList.add('animate__fadeInUp');
+                    }
+
+                    try {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    } catch (e) {
+                        console.warn('Error animating element:', e);
+                    }
+                }
+
+                observe(selector) {
+                    const elements = utils.safeQuerySelectorAll(selector);
+                    elements.forEach((element, index) => {
+                        try {
+                            element.style.opacity = '0';
+                            element.style.transform = 'translateY(30px)';
+                            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                            this.observer.observe(element);
+                        } catch (e) {
+                            console.warn(`Error setting up animation for element ${index}:`, e);
+                        }
+                    });
+                }
+            }
+
+            // Mobile menu controller
+            class MobileMenuController {
+                constructor() {
+                    this.mobileMenu = utils.safeQuerySelector('#mobileMenu');
+                    this.mobileMenuToggle = utils.safeQuerySelector('.mobile-menu-toggle');
+                    this.isInitialized = false;
+
+                    this.init();
+                }
+
+                init() {
+                    if (!this.mobileMenu || !this.mobileMenuToggle || this.isInitialized) return;
+
+                    this.isInitialized = true;
+
+                    window.toggleMobileMenu = this.toggle.bind(this);
+
+                    document.addEventListener('click', this.handleOutsideClick.bind(this));
+                    window.addEventListener('resize', utils.throttle(this.handleResize.bind(this), 100));
+                    document.addEventListener('keydown', this.handleKeydown.bind(this));
+                }
+
+                toggle() {
+                    try {
+                        this.mobileMenu.classList.toggle('active');
+                        this.mobileMenuToggle.setAttribute('aria-expanded',
+                            this.mobileMenu.classList.contains('active'));
+                    } catch (e) {
+                        console.warn('Error toggling mobile menu:', e);
+                    }
+                }
+
+                close() {
+                    try {
+                        this.mobileMenu.classList.remove('active');
+                        this.mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                    } catch (e) {
+                        console.warn('Error closing mobile menu:', e);
+                    }
+                }
+
+                handleOutsideClick(event) {
+                    if (this.mobileMenu.classList.contains('active') &&
+                        !this.mobileMenu.contains(event.target) &&
+                        !this.mobileMenuToggle.contains(event.target)) {
+                        this.close();
+                    }
+                }
+
+                handleResize() {
+                    if (window.innerWidth > 768) {
+                        this.close();
+                    }
+                }
+
+                handleKeydown(event) {
+                    if (event.key === 'Escape' && this.mobileMenu.classList.contains('active')) {
+                        this.close();
+                    }
+                }
+            }
+
+            // Category cards interaction
+            class CategoryCardsController {
+                constructor() {
+                    this.init();
+                }
+
+                init() {
+                    const categoryCards = utils.safeQuerySelectorAll('.cursor-pointer');
+                    categoryCards.forEach(card => {
+                        try {
+                            card.addEventListener('click', this.handleClick.bind(this));
+                            card.setAttribute('tabindex', '0');
+                            card.setAttribute('role', 'button');
+                            card.addEventListener('keydown', this.handleKeydown.bind(this));
+                        } catch (e) {
+                            console.warn('Error setting up category card:', e);
+                        }
+                    });
+                }
+
+                handleClick(event) {
+                    const card = event.currentTarget;
+                    try {
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            card.style.transform = 'scale(1)';
+                        }, 150);
+                    } catch (e) {
+                        console.warn('Error in category card click animation:', e);
+                    }
+                }
+
+                handleKeydown(event) {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        this.handleClick(event);
+                    }
+                }
+            }
+
+            // Initialize everything when DOM is ready
+            function init() {
+                try {
+                    // Initialize particle system
+                    const particleSystem = new ParticleSystem();
+
+                    // Initialize other controllers
+                    const animationObserver = new AnimationObserver();
+                    const mobileMenuController = new MobileMenuController();
+                    const categoryCardsController = new CategoryCardsController();
+
+                    // Observe elements for animation
+                    animationObserver.observe('.bg-white\\/10');
+                    animationObserver.observe('.glass-card');
+
+                    // Liquid Metal Interaction Controller
+                    const liquidMetalController = {
+                        layers: document.querySelectorAll('.liquid-metal-layer'),
+                        overlay: document.querySelector('.liquid-metal-overlay'),
+
+                        init() {
+                            this.setupMouseTracking();
+                            this.setupScrollEffects();
+                            this.setupPerformanceOptimizations();
+                        },
+
+                        setupMouseTracking() {
+                            let mouseX = 0, mouseY = 0;
+
+                            document.addEventListener('mousemove', (e) => {
+                                mouseX = e.clientX / window.innerWidth;
+                                mouseY = e.clientY / window.innerHeight;
+
+                                // Apply subtle mouse-responsive effects to liquid metal
+                                if (this.layers.length > 0) {
+                                    this.layers[0].style.transform = `translate(${mouseX * 5 - 2.5}px, ${mouseY * 5 - 2.5}px)`;
+                                }
+                                if (this.layers.length > 1) {
+                                    this.layers[1].style.transform = `translate(${mouseX * -3 + 1.5}px, ${mouseY * -3 + 1.5}px)`;
+                                }
+                            });
+                        },
+
+                        setupScrollEffects() {
+                            let ticking = false;
+
+                            window.addEventListener('scroll', () => {
+                                if (!ticking) {
+                                    requestAnimationFrame(() => {
+                                        const scrolled = window.pageYOffset;
+                                        const rate = scrolled * -0.5;
+
+                                        if (this.overlay) {
+                                            this.overlay.style.transform = `translateY(${rate}px)`;
+                                            this.overlay.style.opacity = Math.max(0.3, 1 - scrolled / 1000);
+                                        }
+
+                                        ticking = false;
+                                    });
+                                    ticking = true;
+                                }
+                            });
+                        },
+
+                        setupPerformanceOptimizations() {
+                            // Pause liquid metal animations when tab is hidden
+                            document.addEventListener('visibilitychange', () => {
+                                const isHidden = document.hidden;
+                                this.layers.forEach(layer => {
+                                    if (isHidden) {
+                                        layer.style.animationPlayState = 'paused';
+                                    } else {
+                                        layer.style.animationPlayState = 'running';
+                                    }
+                                });
+
+                                if (this.overlay) {
+                                    if (isHidden) {
+                                        this.overlay.style.animationPlayState = 'paused';
+                                    } else {
+                                        this.overlay.style.animationPlayState = 'running';
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+                    // Initialize liquid metal controller
+                    liquidMetalController.init();
+
+                    // Pause particles when tab is not visible
+                    document.addEventListener('visibilitychange', () => {
+                        if (document.hidden) {
+                            particleSystem.pause();
+                        } else {
+                            particleSystem.resume();
+                        }
+                    });
+
+                    // Cleanup function
+                    window.cleanupAnimations = function() {
+                        particleSystem.pause();
+                    };
+
+                } catch (e) {
+                    console.error('Error initializing systems:', e);
+                }
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+
+        // Enhanced Liquid Canvas Animation with p5.js
+        (function() {
+            'use strict';
+
+            let liquidWaves = [];
+            let particles = [];
+            let time = 0;
+            let mouseInfluence = { x: 0, y: 0, active: false };
+
+            function setup() {
+                const canvas = createCanvas(windowWidth, windowHeight);
+                canvas.parent('liquidCanvas');
+                canvas.style.position = 'fixed';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.zIndex = '0';
+                canvas.style.pointerEvents = 'none';
+
+                // Initialize multiple wave layers
+                for (let i = 0; i < 5; i++) {
+                    liquidWaves.push({
+                        amplitude: random(30, 80),
+                        frequency: random(0.005, 0.02),
+                        speed: random(0.02, 0.08),
+                        offset: random(TWO_PI),
+                        color: color(
+                            random(160, 230), // Purple to pink hue range
+                            random(60, 100),  // Saturation
+                            random(70, 90),   // Brightness
+                            random(10, 40)    // Alpha for subtlety
+                        ),
+                        yOffset: random(height * 0.2, height * 0.8)
+                    });
+                }
+
+                // Initialize floating particles
+                for (let i = 0; i < 50; i++) {
+                    particles.push({
+                        x: random(width),
+                        y: random(height),
+                        vx: random(-0.5, 0.5),
+                        vy: random(-0.5, 0.5),
+                        size: random(2, 6),
+                        alpha: random(30, 80),
+                        hue: random(160, 230)
+                    });
+                }
+            }
+
+            function draw() {
+                clear(); // Transparent background to layer with other animations
+
+                time += 0.02;
+
+                // Update mouse influence
+                if (mouseInfluence.active) {
+                    const influenceX = (mouseInfluence.x - width / 2) * 0.001;
+                    const influenceY = (mouseInfluence.y - height / 2) * 0.001;
+                }
+
+                // Draw liquid waves
+                drawLiquidWaves();
+
+                // Draw floating particles
+                drawParticles();
+
+                // Draw connecting lines between nearby particles
+                drawConnections();
+            }
+
+            function drawLiquidWaves() {
+                liquidWaves.forEach((wave, waveIndex) => {
+                    // Update wave properties
+                    wave.offset += wave.speed;
+
+                    // Mouse interaction effect
+                    let mouseEffect = 0;
+                    if (mouseInfluence.active && waveIndex === 0) {
+                        const distance = dist(mouseInfluence.x, mouseInfluence.y,
+                                            width / 2, wave.yOffset);
+                        mouseEffect = map(distance, 0, 300, 2, 0, true);
+                    }
+
+                    // Draw the wave shape
+                    fill(wave.color);
+                    noStroke();
+
+                    beginShape();
+                    for (let x = 0; x <= width; x += 2) {
+                        // Multiple sine waves for complex motion
+                        let y = wave.yOffset;
+
+                        // Primary wave
+                        y += sin(x * wave.frequency + wave.offset) * wave.amplitude;
+
+                        // Secondary wave for complexity
+                        y += sin(x * wave.frequency * 2.5 + wave.offset * 1.3) * (wave.amplitude * 0.3);
+
+                        // Tertiary wave for fine detail
+                        y += sin(x * wave.frequency * 0.7 + wave.offset * 0.8) * (wave.amplitude * 0.15);
+
+                        // Mouse interaction ripple
+                        if (mouseInfluence.active && waveIndex === 0) {
+                            const distance = abs(x - mouseInfluence.x);
+                            y += sin(distance * 0.05 + time * 3) * mouseEffect * 20;
+                        }
+
+                        // Add some noise for organic feel
+                        y += noise(x * 0.01, time * 0.5 + waveIndex) * 15 - 7.5;
+
+                        vertex(x, y);
+                    }
+                    endShape(CLOSE);
+
+                    // Add glow effect
+                    drawWaveGlow(wave);
+                });
+            }
+
+            function drawWaveGlow(wave) {
+                for (let i = 3; i > 0; i--) {
+                    fill(red(wave.color), green(wave.color), blue(wave.color),
+                         alpha(wave.color) * (0.1 / i));
+                    beginShape();
+                    for (let x = 0; x <= width; x += 4) {
+                        let y = wave.yOffset;
+                        y += sin(x * wave.frequency + wave.offset) * wave.amplitude;
+                        y += sin(x * wave.frequency * 2.5 + wave.offset * 1.3) * (wave.amplitude * 0.3);
+                        y += noise(x * 0.01, time * 0.5 + waveIndex) * 10 - 5;
+                        vertex(x, y);
+                    }
+                    endShape(CLOSE);
+                }
+            }
+
+            function drawParticles() {
+                particles.forEach(particle => {
+                    // Update particle position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+
+                    // Mouse attraction (subtle)
+                    if (mouseInfluence.active) {
+                        const dx = mouseInfluence.x - particle.x;
+                        const dy = mouseInfluence.y - particle.y;
+                        const distance = sqrt(dx * dx + dy * dy);
+
+                        if (distance < 150) {
+                            const force = (150 - distance) / 150 * 0.02;
+                            particle.vx += (dx / distance) * force;
+                            particle.vy += (dy / distance) * force;
+                        }
+                    }
+
+                    // Boundary wrapping
+                    if (particle.x < 0) particle.x = width;
+                    if (particle.x > width) particle.x = 0;
+                    if (particle.y < 0) particle.y = height;
+                    if (particle.y > height) particle.y = 0;
+
+                    // Apply some friction
+                    particle.vx *= 0.99;
+                    particle.vy *= 0.99;
+
+                    // Draw particle with pulsing effect
+                    const pulse = sin(time * 2 + particle.x * 0.01) * 0.3 + 1;
+                    const currentSize = particle.size * pulse;
+
+                    fill(particle.hue, 80, 90, particle.alpha * pulse);
+                    noStroke();
+                    ellipse(particle.x, particle.y, currentSize, currentSize);
+
+                    // Add glow
+                    fill(particle.hue, 60, 95, particle.alpha * 0.3);
+                    ellipse(particle.x, particle.y, currentSize * 2, currentSize * 2);
+                });
+            }
+
+            function drawConnections() {
+                stroke(180, 80, 90, 20);
+                strokeWeight(0.5);
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p1 = particles[i];
+                        const p2 = particles[j];
+                        const distance = dist(p1.x, p1.y, p2.x, p2.y);
+
+                        if (distance < 100) {
+                            // Create gradient effect based on distance
+                            const alpha = map(distance, 0, 100, 50, 0);
+                            stroke(180, 70, 85, alpha);
+                            line(p1.x, p1.y, p2.x, p2.y);
+                        }
+                    }
+                }
+                noStroke();
+            }
+
+            // Mouse interaction
+            function mouseMoved() {
+                mouseInfluence.x = mouseX;
+                mouseInfluence.y = mouseY;
+                mouseInfluence.active = true;
+            }
+
+            function mousePressed() {
+                // Create ripple effect on click
+                for (let i = 0; i < liquidWaves.length; i++) {
+                    liquidWaves[i].amplitude += 20;
+                    setTimeout(() => {
+                        liquidWaves[i].amplitude = liquidWaves[i].amplitude > 20 ?
+                            liquidWaves[i].amplitude - 20 : liquidWaves[i].amplitude;
+                    }, 500);
+                }
+            }
+
+            // Responsive handling
+            function windowResized() {
+                resizeCanvas(windowWidth, windowHeight);
+
+                // Adjust wave properties for new dimensions
+                liquidWaves.forEach(wave => {
+                    wave.yOffset = random(height * 0.2, height * 0.8);
+                });
+            }
+
+            // Performance optimization
+            let frameCount = 0;
+            const originalDraw = draw;
+
+            draw = function() {
+                frameCount++;
+                // Skip frames on slower devices for better performance
+                if (frameCount % 2 === 0 && (width > 1920 || height > 1080)) {
+                    return;
+                }
+
+                originalDraw();
+            };
+
+            // Pause animation when tab is not visible
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    noLoop();
+                } else {
+                    loop();
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - CrewUp{% endblock %}
+
+{% block header_class %}bg-purple-600{% endblock %}
+
+{% block content %}
+<div class="about-page" style="padding-top: 80px;">
+    <!-- Hero Section -->
+    <section class="hero bg-purple-100 py-16">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center mb-4">About CrewUp</h1>
+            <h2 class="text-3xl font-bold text-center mb-8">Revolutionizing Influencer Marketing</h2>
+            <p class="text-center text-lg max-w-3xl mx-auto">
+                We're on a mission to connect brands with authentic influencers, creating campaigns that drive real results and meaningful engagement across all social platforms.
+            </p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="stat-card bg-white rounded-lg p-6 text-center shadow-sm">
+                    <h3 class="text-3xl font-bold mb-2">10K+</h3>
+                    <p class="text-gray-600">Active Influencers</p>
+                </div>
+                <div class="stat-card bg-white rounded-lg p-6 text-center shadow-sm">
+                    <h3 class="text-3xl font-bold mb-2">500+</h3>
+                    <p class="text-gray-600">Successful Campaigns</p>
+                </div>
+                <div class="stat-card bg-white rounded-lg p-6 text-center shadow-sm">
+                    <h3 class="text-3xl font-bold mb-2">50+</h3>
+                    <p class="text-gray-600">Countries Reached</p>
+                </div>
+                <div class="stat-card bg-white rounded-lg p-6 text-center shadow-sm">
+                    <h3 class="text-3xl font-bold mb-2">98%</h3>
+                    <p class="text-gray-600">Client Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Our Story</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="story-content">
+                    <p class="mb-6">
+                        Founded in 2020, CrewUp emerged from a simple observation: the influencer marketing landscape was fragmented, inefficient, and often failed to connect brands effectively with the right creators, while talented influencers couldn't connect with brands that aligned with their values.
+                    </p>
+                    <p class="mb-6">
+                        We set out to change this by building a platform that prioritizes authentic relationships, data-driven insights, and measurable results. Today, CrewUp is trusted by thousands of brands and influencers worldwide.
+                    </p>
+                    <p>
+                        Our journey is just beginning. We're constantly innovating to make influencer marketing more accessible, effective, and rewarding for everyone involved.
+                    </p>
+                </div>
+                <div class="stats-highlights grid grid-cols-2 gap-6">
+                    <div class="stat-highlight bg-white p-6 rounded-lg shadow-sm">
+                        <h4 class="text-2xl font-bold mb-2">4.9/5</h4>
+                        <p class="text-gray-600">Platform Rating</p>
+                    </div>
+                    <div class="stat-highlight bg-white p-6 rounded-lg shadow-sm">
+                        <h4 class="text-2xl font-bold mb-2">300%</h4>
+                        <p class="text-gray-600">Avg ROI Increase</p>
+                    </div>
+                    <div class="stat-highlight bg-white p-6 rounded-lg shadow-sm">
+                        <h4 class="text-2xl font-bold mb-2">24/7</h4>
+                        <p class="text-gray-600">Support Available</p>
+                    </div>
+                    <div class="stat-highlight bg-white p-6 rounded-lg shadow-sm">
+                        <h4 class="text-2xl font-bold mb-2">Global</h4>
+                        <p class="text-gray-600">Global Reach Scale</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values Section -->
+    <section class="our-values py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Our Values</h2>
+            <p class="text-center mb-12">The principles that guide everything we do at CrewUp</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="value-card bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Authenticity First</h3>
+                    <p>We believe in genuine connections between brands and creators that create meaningful impact.</p>
+                </div>
+                <div class="value-card bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Innovation Driven</h3>
+                    <p>Constantly evolving our platform with cutting-edge technology to stay ahead of industry trends.</p>
+                </div>
+                <div class="value-card bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Results Focused</h3>
+                    <p>Every campaign is designed and optimized to deliver measurable results and ROI for our clients.</p>
+                </div>
+                <div class="value-card bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Trust & Transparency</h3>
+                    <p>Building lasting relationships through honest communication and transparent business practices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4">Meet Our Team</h2>
+            <p class="text-center mb-12">The passionate individuals behind CrewUp's success</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="team-member bg-white p-6 rounded-lg text-center shadow-sm">
+                    <h3 class="text-xl font-bold mb-2">Farhana Hoque</h3>
+                    <p class="text-purple-600 mb-4">CEO & Founder</p>
+                    <p class="text-gray-600">Experienced leader with a passion for transforming digital marketing.</p>
+                </div>
+                <div class="team-member bg-white p-6 rounded-lg text-center shadow-sm">
+                    <h3 class="text-xl font-bold mb-2">Hridita Laskar</h3>
+                    <p class="text-purple-600 mb-4">Head of Partnerships</p>
+                    <p class="text-gray-600">Expert in building and nurturing influencer partnerships across diverse industries.</p>
+                </div>
+                <div class="team-member bg-white p-6 rounded-lg text-center shadow-sm">
+                    <h3 class="text-xl font-bold mb-2">Tabiur Shihab</h3>
+                    <p class="text-purple-600 mb-4">Head of Analytics</p>
+                    <p class="text-gray-600">Data-driven strategist focused on optimizing campaign performance and delivering insightful analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta bg-purple-600 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Join the CrewUp Community?</h2>
+            <p class="mb-8">Whether you're a brand looking to grow or an influencer ready to monetize your audience, we're here to help you succeed.</p>
+            <div class="flex justify-center gap-4">
+                <a href="{% url 'authentication:signup' %}" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">Start as a Brand</a>
+                <a href="{% url 'authentication:signup' %}" class="bg-transparent border-2 border-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700">Start as an Influencer</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

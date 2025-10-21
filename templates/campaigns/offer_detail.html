@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ offer.title }} - CrewUp</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --heliotrope: #c879ffff;
+            --mauve: #f2a8ffff;
+            --violet-web: #e498ffff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(255, 182, 255, 0.95), rgba(200, 121, 255, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(200, 121, 255, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6a4c93;
+            text-decoration: none;
+            background: linear-gradient(135deg, #6a4c93, #8a5ba8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #6a4c93;
+            border: 2px solid #6a4c93;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(138, 91, 168, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 120px;
+            padding-bottom: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .offer-detail-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.15);
+        }
+
+        .offer-header {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            padding: 2.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .offer-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .offer-header .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .offer-body {
+            padding: 2.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-section {
+            background: linear-gradient(135deg, rgba(200, 121, 255, 0.05), rgba(242, 168, 255, 0.05));
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(138, 91, 168, 0.1);
+        }
+
+        .info-section h3 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-section h3 i {
+            color: var(--heliotrope);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(138, 91, 168, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: rgba(51, 51, 51, 0.7);
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .amount-highlight {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--heliotrope);
+        }
+
+        .content-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(138, 91, 168, 0.1);
+        }
+
+        .content-section h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-section h3 i {
+            color: var(--heliotrope);
+        }
+
+        .content-text {
+            color: rgba(51, 51, 51, 0.8);
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, rgba(200, 121, 255, 0.1), rgba(242, 168, 255, 0.1));
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--heliotrope);
+            margin-bottom: 2rem;
+        }
+
+        .message-box h4 {
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .message-box p {
+            color: rgba(51, 51, 51, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Response Form */
+        .response-section {
+            background: linear-gradient(135deg, rgba(200, 121, 255, 0.05), rgba(242, 168, 255, 0.05));
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .response-section h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(138, 91, 168, 0.2);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--heliotrope);
+            box-shadow: 0 0 0 3px rgba(200, 121, 255, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(138, 91, 168, 0.1);
+            color: #6a4c93;
+            border: 2px solid rgba(138, 91, 168, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(138, 91, 168, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .back-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .offer-body {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class="logo">CrewUp</a>
+            <div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'campaigns:my_offers' %}" class="nav-btn nav-btn-secondary">My Offers</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="offer-detail-card animate__animated animate__fadeIn">
+            <div class="offer-header">
+                <h1>{{ offer.title }}</h1>
+                <span class="status-badge">
+                    <i class="fas fa-info-circle"></i> {{ offer.get_status_display }}
+                </span>
+            </div>
+
+            <div class="offer-body">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h3><i class="fas fa-info-circle"></i> Offer Information</h3>
+                        <div class="info-item">
+                            <span class="info-label">From:</span>
+                            <span class="info-value">{{ offer.brand.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">To:</span>
+                            <span class="info-value">{{ offer.influencer.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Amount:</span>
+                            <span class="amount-highlight">${{ offer.offer_amount }}</span>
+                        </div>
+                        {% if offer.deadline %}
+                        <div class="info-item">
+                            <span class="info-label">Deadline:</span>
+                            <span class="info-value">{{ offer.deadline|date:"F d, Y" }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="info-item">
+                            <span class="info-label">Created:</span>
+                            <span class="info-value">{{ offer.created_at|date:"F d, Y" }}</span>
+                        </div>
+                    </div>
+
+                    {% if offer.campaign %}
+                    <div class="info-section">
+                        <h3><i class="fas fa-bullhorn"></i> Related Campaign</h3>
+                        <div class="info-item">
+                            <span class="info-label">Campaign:</span>
+                            <span class="info-value">
+                                <a href="{% url 'campaigns:campaign_detail' offer.campaign.id %}" style="color: var(--heliotrope); text-decoration: none;">
+                                    {{ offer.campaign.title }}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="content-section">
+                    <h3><i class="fas fa-align-left"></i> Description</h3>
+                    <p class="content-text">{{ offer.description }}</p>
+                </div>
+
+                <div class="content-section">
+                    <h3><i class="fas fa-tasks"></i> Deliverables</h3>
+                    <p class="content-text">{{ offer.deliverables }}</p>
+                </div>
+
+                {% if offer.brand_message %}
+                <div class="message-box">
+                    <h4><i class="fas fa-comment"></i> Message from Brand</h4>
+                    <p>{{ offer.brand_message }}</p>
+                </div>
+                {% endif %}
+
+                {% if offer.influencer_response %}
+                <div class="message-box">
+                    <h4><i class="fas fa-reply"></i> Your Response</h4>
+                    <p>{{ offer.influencer_response }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Actions for Influencer -->
+                {% if user == offer.influencer and offer.status == 'pending' %}
+                <div class="response-section">
+                    <h3><i class="fas fa-paper-plane"></i> Respond to This Offer</h3>
+                    <form method="post" action="{% url 'campaigns:accept_offer' offer.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="response" class="form-label">Your Response (Optional)</label>
+                            <textarea name="response" class="form-control" rows="4" placeholder="Add a message to the brand..."></textarea>
+                        </div>
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Accept Offer
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="rejectOffer()">
+                                <i class="fas fa-times"></i> Reject Offer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+
+                <div class="back-section">
+                    <a href="{% url 'campaigns:my_offers' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to My Offers
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function rejectOffer() {
+            if (confirm('Are you sure you want to reject this offer?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = "{% url 'campaigns:reject_offer' offer.id %}";
+                
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = csrfToken;
+                
+                form.appendChild(csrfInput);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
+</body>
+</html>

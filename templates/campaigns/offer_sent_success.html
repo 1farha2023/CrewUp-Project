@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Sent Successfully - CrewUp</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --heliotrope: #c879ffff;
+            --mauve: #f2a8ffff;
+            --violet-web: #e498ffff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f0ff 100%);
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 4rem 3rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 20px 60px rgba(138, 91, 168, 0.2);
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+            box-shadow: 0 10px 30px rgba(200, 121, 255, 0.4);
+        }
+
+        .success-icon i {
+            font-size: 4rem;
+            color: #FFFFFF;
+            animation: checkmark 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(0deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .success-message {
+            font-size: 1.1rem;
+            color: rgba(51, 51, 51, 0.8);
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(200, 121, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(200, 121, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(138, 91, 168, 0.1);
+            color: #6a4c93;
+            border: 2px solid rgba(138, 91, 168, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(138, 91, 168, 0.2);
+            transform: translateY(-2px);
+            border-color: var(--heliotrope);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--heliotrope);
+            border: 2px solid var(--heliotrope);
+        }
+
+        .btn-outline:hover {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 121, 255, 0.3);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--heliotrope);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 3rem 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .success-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .success-icon i {
+                font-size: 3rem;
+            }
+
+            .success-message {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container animate__animated animate__fadeIn">
+        <div class="success-icon animate__animated animate__bounceIn">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="animate__animated animate__fadeInUp">Offer Sent Successfully!</h1>
+        
+        <p class="success-message animate__animated animate__fadeInUp animate__delay-1s">
+            Your custom offer has been sent to the influencer. They will be notified and can review your offer. You'll receive a notification once they respond.
+        </p>
+        
+        <div class="action-buttons animate__animated animate__fadeInUp animate__delay-2s">
+            <a href="{% url 'campaigns:my_offers' %}" class="btn btn-primary">
+                <i class="fas fa-list"></i>
+                View My Offers
+            </a>
+            <a href="{% url 'influencers' %}" class="btn btn-outline">
+                <i class="fas fa-users"></i>
+                Browse More Influencers
+            </a>
+            <a href="{% url 'brand_dashboard' %}" class="btn btn-secondary">
+                <i class="fas fa-home"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#c879ff', '#f2a8ff', '#e498ff', '#ffceff'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+        
+        // Trigger confetti on page load
+        window.addEventListener('load', createConfetti);
+    </script>
+</body>
+</html>

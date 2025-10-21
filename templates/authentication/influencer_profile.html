@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - CrewUp{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --heliotrope: #c879ffff;
+        --mauve: #f2a8ffff;
+        --violet-web: #e498ffff;
+        --pink-lavender: #ffceffff;
+    }
+
+    body {
+        background: linear-gradient(135deg, #fefdffff 0%, #ffceffff 100%);
+    }
+
+    .profile-card {
+        background: rgba(252, 252, 252, 0.88);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(138, 91, 168, 0.2);
+        box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0 12px 40px rgba(138, 91, 168, 0.15);
+    }
+
+    .form-input {
+        border: 2px solid rgba(138, 91, 168, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+        border-color: var(--heliotrope);
+        box-shadow: 0 0 0 3px rgba(200, 121, 255, 0.1);
+        outline: none;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(152, 77, 206, 0.4);
+    }
+
+    .section-title {
+        background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .preview-card {
+        background: linear-gradient(135deg, rgba(200, 121, 255, 0.05), rgba(242, 168, 255, 0.05));
+        border: 1px solid rgba(138, 91, 168, 0.2);
+    }
+
+    .social-icon {
+        color: var(--heliotrope);
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+        border-left: 4px solid #10b981;
+    }
+
+    .alert-error {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+        border-left: 4px solid #ef4444;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen pt-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-bold section-title mb-2">Edit Your Profile</h1>
+            <p class="mt-2 text-gray-600 text-lg">Update your profile information and social media accounts</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Form -->
+            <div class="lg:col-span-2">
+                <div class="profile-card rounded-2xl p-8">
+                    <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 social-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Profile Information
+                    </h2>
+
+                    {% if messages %}
+                    <div class="mb-6">
+                        {% for message in messages %}
+                        <div class="p-4 rounded-lg {% if message.tags == 'error' %}alert-error text-red-700{% else %}alert-success text-green-700{% endif %} mb-2">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    {% if message.tags == 'error' %}
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                    {% else %}
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    {% endif %}
+                                </svg>
+                                {{ message }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Basic Information -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Username
+                                </label>
+                                <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default:'' }}" id="{{ form.username.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                {% if form.username.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.username.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Email
+                                </label>
+                                <input type="email" name="{{ form.email.name }}" value="{{ form.email.value|default:'' }}" id="{{ form.email.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                {% if form.email.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Profile Picture and Bio -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Profile Picture
+                                </label>
+                                {% if form.instance.profile_picture %}
+                                <div class="mb-3">
+                                    <img src="{{ form.instance.profile_picture.url }}" alt="Current profile picture" class="w-20 h-20 rounded-full object-cover">
+                                </div>
+                                {% endif %}
+                                {{ form.profile_picture }}
+                                {% if form.profile_picture.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.profile_picture.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label for="{{ form.bio.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Bio
+                                </label>
+                                <textarea name="{{ form.bio.name }}" id="{{ form.bio.id_for_label }}" rows="4" class="form-input mt-1 block w-full rounded-lg px-4 py-2">{{ form.bio.value|default:'' }}</textarea>
+                                {% if form.bio.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.bio.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Phone
+                                </label>
+                                <input type="text" name="{{ form.phone.name }}" value="{{ form.phone.value|default:'' }}" id="{{ form.phone.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                {% if form.phone.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.phone.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <label for="{{ form.location.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Location
+                                </label>
+                                <input type="text" name="{{ form.location.name }}" value="{{ form.location.value|default:'' }}" id="{{ form.location.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                {% if form.location.errors %}
+                                <div class="mt-1 text-sm text-red-600">{{ form.location.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <label for="{{ form.website.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                Website
+                            </label>
+                            <input type="url" name="{{ form.website.name }}" value="{{ form.website.value|default:'' }}" id="{{ form.website.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                            {% if form.website.errors %}
+                            <div class="mt-1 text-sm text-red-600">{{ form.website.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Influencer Specific Fields -->
+                        <div class="mb-8">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                                <svg class="w-5 h-5 mr-2 social-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                Influencer Information
+                            </h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="{{ form.niche.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Niche/Category
+                                    </label>
+                                    <input type="text" name="{{ form.niche.name }}" value="{{ form.niche.value|default:'' }}" id="{{ form.niche.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                    {% if form.niche.errors %}
+                                    <div class="mt-1 text-sm text-red-600">{{ form.niche.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <label for="{{ form.followers_count.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Total Followers
+                                    </label>
+                                    <input type="number" name="{{ form.followers_count.name }}" value="{{ form.followers_count.value|default:'' }}" id="{{ form.followers_count.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                    {% if form.followers_count.errors %}
+                                    <div class="mt-1 text-sm text-red-600">{{ form.followers_count.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="{{ form.instagram_handle.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        Instagram Handle
+                                    </label>
+                                    <input type="text" name="{{ form.instagram_handle.name }}" value="{{ form.instagram_handle.value|default:'' }}" id="{{ form.instagram_handle.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2" placeholder="@username">
+                                    {% if form.instagram_handle.errors %}
+                                    <div class="mt-1 text-sm text-red-600">{{ form.instagram_handle.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <label for="{{ form.youtube_channel.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        YouTube Channel
+                                    </label>
+                                    <input type="text" name="{{ form.youtube_channel.name }}" value="{{ form.youtube_channel.value|default:'' }}" id="{{ form.youtube_channel.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2">
+                                    {% if form.youtube_channel.errors %}
+                                    <div class="mt-1 text-sm text-red-600">{{ form.youtube_channel.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <label for="{{ form.tiktok_handle.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                                        TikTok Handle
+                                    </label>
+                                    <input type="text" name="{{ form.tiktok_handle.name }}" value="{{ form.tiktok_handle.value|default:'' }}" id="{{ form.tiktok_handle.id_for_label }}" class="form-input mt-1 block w-full rounded-lg px-4 py-2" placeholder="@username">
+                                    {% if form.tiktok_handle.errors %}
+                                    <div class="mt-1 text-sm text-red-600">{{ form.tiktok_handle.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <a href="{% url 'authentication:logout' %}"
+                               class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                Logout
+                            </a>
+                            <div class="flex space-x-3">
+                                <a href="{% url 'influencer_dashboard' %}"
+                                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn-primary inline-flex items-center px-6 py-3 rounded-full shadow-lg text-sm font-bold text-white">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Save Changes
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Profile Preview -->
+            <div>
+                <div class="preview-card rounded-2xl p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 social-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Profile Preview
+                    </h3>
+
+                    <div class="text-center">
+                        {% if form.instance.profile_picture %}
+                        <img src="{{ form.instance.profile_picture.url }}" alt="{{ form.instance.username }}" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
+                        {% else %}
+                        <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-3 flex items-center justify-center">
+                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        {% endif %}
+
+                        <h4 class="text-lg font-medium text-gray-900">{{ form.instance.username }}</h4>
+                        {% if form.instance.niche %}
+                        <p class="text-sm text-gray-500">{{ form.instance.niche }}</p>
+                        {% endif %}
+
+                        {% if form.instance.bio %}
+                        <p class="text-sm text-gray-600 mt-2">{{ form.instance.bio|truncatechars:100 }}</p>
+                        {% endif %}
+
+                        {% if form.instance.location %}
+                        <p class="text-sm text-gray-500 mt-1">{{ form.instance.location }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-6 space-y-2">
+                        {% if form.instance.instagram_handle %}
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                            {{ form.instance.instagram_handle }}
+                        </div>
+                        {% endif %}
+
+                        {% if form.instance.youtube_channel %}
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            YouTube
+                        </div>
+                        {% endif %}
+
+                        {% if form.instance.tiktok_handle %}
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2 social-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                            </svg>
+                            {{ form.instance.tiktok_handle }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

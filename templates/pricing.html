@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pricing - CrewUp{% endblock %}
+
+{% block header_class %}bg-purple-600{% endblock %}
+
+{% block content %}
+<div class="pt-20 bg-gradient-to-br from-purple-100 to-white" style="padding-top: 100px;">
+    <div class="container mx-auto px-4 py-16">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">CrewUp Pricing Plans</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Empower your Influencer Marketing and boost your brand's impact with CrewUp's advanced tools.
+            </p>
+        </div>
+
+        <!-- Billing Toggle -->
+        <div class="flex justify-center items-center gap-4 mb-12">
+            <span class="text-gray-600 font-medium">Monthly</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" value="" class="sr-only peer" id="billing-toggle">
+                <div class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-purple-600"></div>
+            </label>
+            <span class="text-gray-600 font-medium">Yearly</span>
+            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Save 50%</span>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <!-- Basic Plan -->
+            <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Basic Plan</h3>
+                <p class="text-gray-600 mb-6">Perfect for getting started</p>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    <span class="monthly-price">Free</span>
+                </div>
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Basic campaign overview</span>
+                    </li>
+                    
+                
+                </ul>
+                <button onclick="handlePayment('basic', getBillingCycle())" class="w-full text-center bg-white border border-purple-600 text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors duration-200">
+                    Get Started
+                </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="bg-white p-8 rounded-lg shadow-sm border border-purple-200 flex flex-col relative transform hover:-translate-y-1 transition-transform duration-300">
+                <div class="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg rounded-tr-lg text-sm font-medium">
+                    Popular
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Pro Plan</h3>
+                <p class="text-gray-600 mb-6">For Growing Business</p>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    <span class="monthly-price">$99</span>
+                    <span class="text-lg font-medium text-gray-500">/month</span>
+                </div>
+                <ul class="space-y-4 mb-8 flex-grow">
+                    
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Unlimited campaigns</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Advanced analytics & reporting</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Priority support</span>
+                    </li>
+                </ul>
+                <button onclick="handlePayment('pro', getBillingCycle())" class="w-full text-center bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200">
+                    Subscribe Now
+                </button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Enterprise Plan</h3>
+                <p class="text-gray-600 mb-6">For large organizations</p>
+                <div class="text-4xl font-bold text-gray-900 mb-6">
+                    Custom Pricing
+                </div>
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Everything in Pro, plus:</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Custom integrations</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">Dedicated account manager</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-600">White-label solutions</span>
+                    </li>
+                </ul>
+                <button onclick="handleEnterprise()" class="w-full text-center bg-white border border-purple-600 text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors duration-200">
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+
+        <!-- Enterprise Solutions -->
+        <div class="mt-24">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Enterprise Solutions</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                Need something more? Our Enterprise plan offers unlimited customization and dedicated support.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Dedicated Support -->
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Dedicated Support</h3>
+                    <p class="text-gray-600">24/7 priority support with dedicated account manager</p>
+                </div>
+
+                <!-- Custom Integrations -->
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Custom Integrations</h3>
+                    <p class="text-gray-600">API access and custom integrations with your existing tools</p>
+                </div>
+
+                <!-- White-label Solutions -->
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">White-label Solutions</h3>
+                    <p class="text-gray-600">Fully branded platform with your company's identity</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#contact-sales" id="contact-sales" class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200">
+                    CONTACT SALES TEAM
+                </a>
+            </div>
+        </div>
+
+        <!-- Why Choose Section -->
+        <div class="mt-24">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">Why Choose CrewUp?</h2>
+            <p class="text-center text-gray-600 mb-12">
+                We provide everything you need for successful brand collaborations
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Secure Payments</h3>
+                    <p class="text-gray-600">Protected transactions for peace of mind</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Real-time Analytics</h3>
+                    <p class="text-gray-600">Track campaign performance instantly</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Grow Your Brand</h3>
+                    <p class="text-gray-600">Expand your reach effectively</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Quality Campaigns</h3>
+                    <p class="text-gray-600">Premium opportunities and results</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Stripe Payment Handler -->
+<script src="{% static 'js/stripe-payment.js' %}"></script>
+
+<!-- JavaScript for pricing toggle and payments -->
+<script>
+    // Initialize payment handler when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the Stripe payment handler
+        stripePayment.init();
+
+        // Set up pricing toggle
+        StripePaymentHandler.updatePricingDisplay('billing-toggle', '.monthly-price');
+
+        // Mark user as authenticated if they are logged in
+        {% if user.is_authenticated %}
+        document.body.classList.add('user-authenticated');
+        {% endif %}
+    });
+
+    // Get the current billing cycle (monthly or yearly)
+    function getBillingCycle() {
+        return StripePaymentHandler.getBillingCycle('billing-toggle');
+    }
+
+    // Handle payment for different plans using the new handler
+    async function handlePayment(planType, billingCycle) {
+        const button = event.target;
+        await stripePayment.handlePayment(planType, billingCycle, { button });
+    }
+
+    // Handle enterprise plan (redirect to contact page)
+    function handleEnterprise() {
+        stripePayment.handleEnterpriseContact();
+    }
+</script>
+{% endblock %}

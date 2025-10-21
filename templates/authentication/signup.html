@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[600px]">
+            <!-- Left Column - Signup Form -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Join CrewUp Today</h1>
+                    <p class="text-gray-600 text-lg">Start your influencer marketing journey in minutes</p>
+                </div>
+
+                <!-- User Type Toggle -->
+                <div class="flex justify-center mb-8">
+                    <div class="bg-gray-100 p-1 rounded-xl flex">
+                        <button id="brandToggle" class="user-type-toggle px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2" onclick="toggleUserType('brand')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <span>I'm a Brand</span>
+                        </button>
+                        <button id="influencerToggle" class="user-type-toggle px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2" onclick="toggleUserType('influencer')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span>I'm an Influencer</span>
+                        </button>
+                    </div>
+                </div>
+
+                {% if messages %}
+                <div class="messages mb-6">
+                    {% for message in messages %}
+                    <div class="p-4 mb-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% else %}bg-green-50 border border-green-200 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form method="POST" class="space-y-6" id="signupForm">
+                    {% csrf_token %}
+
+                    <!-- Common Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="id_first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                First Name
+                            </label>
+                            {{ form.first_name }}
+                        </div>
+                        <div>
+                            <label for="id_last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Last Name
+                            </label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="id_username" class="block text-sm font-medium text-gray-700 mb-2">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            Username
+                        </label>
+                        {{ form.username }}
+                    </div>
+
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-gray-700 mb-2">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Email Address
+                        </label>
+                        {{ form.email }}
+                    </div>
+
+
+                    <!-- Password Fields -->
+                    <div class="space-y-4">
+                        <div>
+                            <label for="id_password1" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                Password
+                            </label>
+                            {{ form.password1 }}
+                        </div>
+                        <div>
+                            <label for="id_password2" class="block text-sm font-medium text-gray-700 mb-2">
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Confirm Password
+                            </label>
+                            {{ form.password2 }}
+                        </div>
+                    </div>
+
+                    <!-- User Type Selection -->
+                    <div>
+                        <label for="id_user_type" class="block text-sm font-medium text-gray-700 mb-2">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            </svg>
+                            I am a:
+                        </label>
+                        {{ form.user_type }}
+                    </div>
+
+                    <button type="submit" id="signupButton" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-blue-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        Create Account →
+                    </button>
+
+                    <!-- Social Login -->
+                    <div class="mt-6">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-6">
+                            <button type="button" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all duration-300">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                </svg>
+                                <span class="ml-2">Google</span>
+                            </button>
+
+                            <button type="button" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                                </svg>
+                                <span class="ml-2">Twitter</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-6">
+                        <p class="text-sm text-gray-600">
+                            Already have an account?
+                            <a href="{% url 'authentication:login' %}" class="font-medium text-purple-600 hover:text-purple-500 transition-colors duration-300">Sign in</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column - Marketing Content -->
+            <div id="brandContent" class="space-y-8">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-800 text-sm font-medium mb-6">
+                        <span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                        For Brands
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                        Grow Your Brand with
+                        <span class="text-gradient">Authentic Influencers</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Connect with verified influencers, launch successful campaigns, and track your ROI with our comprehensive platform.
+                    </p>
+                </div>
+
+                <!-- Features List -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Access to 10K+ verified influencers</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Advanced campaign analytics</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Secure payment processing</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Dedicated account support</span>
+                    </div>
+                </div>
+
+                <!-- Quick Setup Card -->
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl p-6 text-white">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Quick Setup</h3>
+                            <p class="text-purple-100">Get started in under 5 minutes</p>
+                        </div>
+                    </div>
+                    <p class="text-purple-100">
+                        Join thousands of brands already using CrewUp to scale their marketing efforts.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Influencer Content (Hidden by default) -->
+            <div id="influencerContent" class="space-y-8" style="display: none;">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-800 text-sm font-medium mb-6">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                        For Influencers
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                        Monetize Your Influence &
+                        <span class="text-gradient">Build Your Brand</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Partner with top brands, manage your campaigns, and grow your income with our creator-friendly tools.
+                    </p>
+                </div>
+
+                <!-- Features List -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Connect with top brands</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Transparent pricing & payments</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Campaign management tools</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700">Performance tracking dashboard</span>
+                    </div>
+                </div>
+
+                <!-- Quick Setup Card -->
+                <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl p-6 text-white">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg">Quick Setup</h3>
+                            <p class="text-blue-100">Get started in under 5 minutes</p>
+                        </div>
+                    </div>
+                    <p class="text-blue-100">
+                        Join thousands of creators already using CrewUp to grow their income.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .user-type-toggle {
+        background-color: transparent;
+        color: #6b7280;
+        transition: all 0.3s ease;
+    }
+    .user-type-toggle.active {
+        background-color: #7c3aed;
+        color: white;
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    }
+    .user-type-toggle:not(.active):hover {
+        background-color: #f3f4f6;
+        color: #374151;
+    }
+
+    /* Style Django form inputs */
+    #signupForm input[type="text"],
+    #signupForm input[type="email"],
+    #signupForm input[type="password"],
+    #signupForm select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    #signupForm input[type="text"]:focus,
+    #signupForm input[type="email"]:focus,
+    #signupForm input[type="password"]:focus,
+    #signupForm select:focus {
+        outline: none;
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    }
+
+    #signupForm label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #374151;
+    }
+</style>
+
+<script>
+    function toggleUserType(type) {
+        const brandToggle = document.getElementById('brandToggle');
+        const influencerToggle = document.getElementById('influencerToggle');
+        const brandContent = document.getElementById('brandContent');
+        const influencerContent = document.getElementById('influencerContent');
+        const userTypeSelect = document.getElementById('id_user_type');
+
+        if (type === 'brand') {
+            // Toggle buttons
+            brandToggle.classList.add('active');
+            influencerToggle.classList.remove('active');
+
+            // Show brand content, hide influencer content
+            if (brandContent) brandContent.style.display = 'block';
+            if (influencerContent) influencerContent.style.display = 'none';
+
+            // Set form value
+            if (userTypeSelect) userTypeSelect.value = 'brand';
+        } else {
+            // Toggle buttons
+            influencerToggle.classList.add('active');
+            brandToggle.classList.remove('active');
+
+            // Show influencer content, hide brand content
+            if (influencerContent) influencerContent.style.display = 'block';
+            if (brandContent) brandContent.style.display = 'none';
+
+            // Set form value
+            if (userTypeSelect) userTypeSelect.value = 'influencer';
+        }
+    }
+
+    // Initialize with brand view
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleUserType('brand');
+
+        // Add form validation
+        const signupForm = document.getElementById('signupForm');
+        const signupButton = document.getElementById('signupButton');
+
+        signupForm.addEventListener('submit', function(e) {
+            const requiredFields = signupForm.querySelectorAll('input[required]');
+            let isValid = true;
+
+            // Check required fields
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+
+            // Check email format
+            const emailField = document.querySelector('input[type="email"]');
+            if (emailField && emailField.value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailField.value)) {
+                    emailField.style.borderColor = '#ef4444';
+                    isValid = false;
+                }
+            }
+
+            // Check password confirmation
+            const password1 = document.getElementById('password1');
+            const password2 = document.getElementById('password2');
+            if (password1 && password2 && password1.value !== password2.value) {
+                password2.style.borderColor = '#ef4444';
+                alert('Passwords do not match!');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Show loading state
+            signupButton.textContent = 'Creating Account...';
+            signupButton.disabled = true;
+
+            return true;
+        });
+
+        // Clear error styling on input
+        const inputs = signupForm.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '';
+            });
+        });
+    });
+</script>
+{% endblock %}

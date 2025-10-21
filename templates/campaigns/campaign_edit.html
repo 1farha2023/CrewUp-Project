@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Campaign - CrewUp{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 pt-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Edit Campaign</h1>
+            <p class="mt-2 text-gray-600">Update your campaign details below</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white shadow-sm rounded-lg">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-medium text-gray-900">Campaign Information</h2>
+            </div>
+
+            <form method="post" enctype="multipart/form-data" class="p-6 space-y-6">
+                {% csrf_token %}
+
+                <!-- Title Field -->
+                <div>
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Campaign Title *
+                    </label>
+                    <input type="text"
+                           name="{{ form.title.name }}"
+                           id="{{ form.title.id_for_label }}"
+                           value="{{ form.title.value|default:campaign.title }}"
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                           placeholder="Enter your campaign title"
+                           required>
+                    {% if form.title.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.title.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Description Field -->
+                <div>
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Description *
+                    </label>
+                    <textarea name="{{ form.description.name }}"
+                              id="{{ form.description.id_for_label }}"
+                              rows="4"
+                              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                              placeholder="Describe your campaign requirements, goals, and what you're looking for in influencers"
+                              required>{{ form.description.value|default:campaign.description }}</textarea>
+                    {% if form.description.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Budget and Category Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Budget Field -->
+                    <div>
+                        <label for="{{ form.budget.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Budget ($) *
+                        </label>
+                        <input type="number"
+                               name="{{ form.budget.name }}"
+                               id="{{ form.budget.id_for_label }}"
+                               value="{{ form.budget.value|default:campaign.budget }}"
+                               step="0.01"
+                               min="0"
+                               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                               placeholder="0.00"
+                               required>
+                        {% if form.budget.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.budget.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Category Field -->
+                    <div>
+                        <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Category *
+                        </label>
+                        <select name="{{ form.category.name }}"
+                                id="{{ form.category.id_for_label }}"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                                required>
+                            <option value="">Select a category</option>
+                            <option value="fashion" {% if form.category.value == 'fashion' or campaign.category == 'fashion' %}selected{% endif %}>Fashion & Beauty</option>
+                            <option value="tech" {% if form.category.value == 'tech' or campaign.category == 'tech' %}selected{% endif %}>Technology</option>
+                            <option value="food" {% if form.category.value == 'food' or campaign.category == 'food' %}selected{% endif %}>Food & Beverage</option>
+                            <option value="lifestyle" {% if form.category.value == 'lifestyle' or campaign.category == 'lifestyle' %}selected{% endif %}>Lifestyle</option>
+                            <option value="travel" {% if form.category.value == 'travel' or campaign.category == 'travel' %}selected{% endif %}>Travel</option>
+                        </select>
+                        {% if form.category.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Platform and Image Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Platform Field -->
+                    <div>
+                        <label for="{{ form.platform.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Platform *
+                        </label>
+                        <select name="{{ form.platform.name }}"
+                                id="{{ form.platform.id_for_label }}"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                                required>
+                            <option value="">Select a platform</option>
+                            <option value="instagram" {% if form.platform.value == 'instagram' or campaign.platform == 'instagram' %}selected{% endif %}>Instagram</option>
+                            <option value="youtube" {% if form.platform.value == 'youtube' or campaign.platform == 'youtube' %}selected{% endif %}>YouTube</option>
+                            <option value="tiktok" {% if form.platform.value == 'tiktok' or campaign.platform == 'tiktok' %}selected{% endif %}>TikTok</option>
+                            <option value="twitter" {% if form.platform.value == 'twitter' or campaign.platform == 'twitter' %}selected{% endif %}>Twitter</option>
+                        </select>
+                        {% if form.platform.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.platform.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Image Field -->
+                    <div>
+                        <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Campaign Image
+                        </label>
+                        <input type="file"
+                               name="{{ form.image.name }}"
+                               id="{{ form.image.id_for_label }}"
+                               accept="image/*"
+                               class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                        {% if form.image.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                        {% if campaign.image %}
+                            <p class="mt-1 text-sm text-gray-500">Current image: {{ campaign.image.name }}</p>
+                        {% else %}
+                            <p class="mt-1 text-sm text-gray-500">Optional: Upload an image for your campaign</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                    <a href="{% url 'campaigns:campaign_detail' campaign.id %}"
+                       class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                            class="bg-purple-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        Update Campaign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

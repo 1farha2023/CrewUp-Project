@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ influencer.username }} - Influencer Profile | CrewUp</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Purple-Pink Color Palette */
+            --amethyst: #7b3fa7ff;
+            --lavender-floral: #b66ee8ff;
+            --heliotrope: #c879ffff;
+            --heliotrope-2: #d689ffff;
+            --violet-web: #e498ffff;
+            --mauve: #f2a8ffff;
+            --mauve-2: #ffb7ffff;
+            --mauve-3: #ffc4ffff;
+            --mauve-4: #d67ed6ff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #FFFFFF;
+            color: #333333;
+            min-height: 100vh;
+            position: relative;
+            padding-top: 0;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(255, 182, 255, 0.95), rgba(200, 121, 255, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            border-bottom: none;
+            box-shadow: 0 2px 20px rgba(200, 121, 255, 0.3);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6a4c93;
+            text-decoration: none;
+            margin-right: auto;
+            background: linear-gradient(135deg, #6a4c93, #8a5ba8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links a {
+            color: #6a4c93;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .navbar-links a:hover {
+            background: rgba(138, 91, 168, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, #8a5ba8, #a855f7);
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+            border: none;
+        }
+
+        .nav-btn-primary:hover {
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #6a4c93;
+            border: 2px solid #6a4c93;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(138, 91, 168, 0.1);
+            border-color: #8a5ba8;
+            color: #8a5ba8;
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 0;
+            padding: 3rem;
+            padding-top: 100px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--heliotrope);
+            flex-shrink: 0;
+        }
+
+        .default-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #FFFFFF;
+            border: 4px solid var(--violet-web);
+            flex-shrink: 0;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-location {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .stat-label {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 1.2rem;
+        }
+
+        .rating-value {
+            color: #333333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .reviews-count {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge i {
+            font-size: 0.7rem;
+        }
+
+        /* Profile Content */
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-bio {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+        }
+
+        .bio-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 1rem;
+        }
+
+        .bio-text {
+            color: rgba(51, 51, 51, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Package Tabs */
+        .package-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(138, 91, 168, 0.2);
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--heliotrope);
+            border-bottom-color: var(--heliotrope);
+            background: rgba(200, 121, 255, 0.05);
+        }
+
+        .tab-btn:hover {
+            color: var(--heliotrope);
+            background: rgba(200, 121, 255, 0.05);
+        }
+
+        /* Package Grid */
+        .package-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .package-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(138, 91, 168, 0.15);
+            border-color: var(--heliotrope);
+        }
+
+        .package-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .package-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 1.2rem;
+        }
+
+        .package-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333333;
+        }
+
+        .package-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--heliotrope);
+            margin-bottom: 0.5rem;
+        }
+
+        .package-description {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .see-more {
+            color: var(--heliotrope);
+            font-size: 0.9rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .see-more:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar */
+        .profile-sidebar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.1);
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .selected-package {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .selected-package h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .selected-package .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            border: none;
+            padding: 1rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(200, 121, 255, 0.4);
+        }
+
+        .custom-offer {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .custom-offer a {
+            color: var(--heliotrope);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .custom-offer a:hover {
+            text-decoration: underline;
+        }
+
+        .how-it-works {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(138, 91, 168, 0.2);
+        }
+
+        .how-it-works h4 {
+            color: #333333;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .how-it-works a {
+            color: var(--heliotrope);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .how-it-works a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+                padding-top: 120px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem;
+            }
+
+            .profile-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .package-tabs {
+                overflow-x: auto;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class="logo">CrewUp</a>
+            <ul class="navbar-links">
+                <li><a href="{% url 'campaigns:campaign_list' %}">Campaigns</a></li>
+                <li><a href="{% url 'influencers' %}">Influencers</a></li>
+                <li><a href="{% url 'brands' %}">Brands</a></li>
+                <li><a href="{% url 'how_it_works' %}">How It Works</a></li>
+                <li><a href="{% url 'pricing' %}">Pricing</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+            </ul>
+
+            <div class="navbar-buttons">
+                {% if user.is_authenticated %}
+                    {% if user.user_type == 'admin' %}
+                        <a href="{% url 'admin_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                    {% elif user.user_type == 'brand' %}
+                        <a href="{% url 'brand_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                    {% elif user.user_type == 'influencer' %}
+                        <a href="{% url 'influencer_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                    {% endif %}
+                    <a href="{% url 'authentication:logout' %}" class="nav-btn nav-btn-primary">Logout</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <!-- Profile Header -->
+        <div class="profile-header animate__animated animate__fadeIn">
+            {% if influencer.profile_picture %}
+                <img src="{{ influencer.profile_picture.url }}" alt="{{ influencer.username }}" class="profile-avatar">
+            {% else %}
+                <div class="default-avatar">{{ influencer.username|first|upper }}</div>
+            {% endif %}
+
+            <div class="profile-info">
+                <h1>{{ influencer.username }}</h1>
+                <div class="profile-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ influencer.location|default:"Location not specified" }}
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span class="stat-value">{{ influencer.followers_count|default:"0"|floatformat:"0" }}</span>
+                        <span class="stat-label">Total Followers</span>
+                    </div>
+                    {% if influencer.instagram_handle %}
+                    <div class="stat-item">
+                        <i class="fab fa-instagram"></i>
+                        <span class="stat-value">@{{ influencer.instagram_handle }}</span>
+                        <span class="stat-label">Instagram</span>
+                    </div>
+                    {% endif %}
+                    {% if influencer.tiktok_handle %}
+                    <div class="stat-item">
+                        <i class="fab fa-tiktok"></i>
+                        <span class="stat-value">@{{ influencer.tiktok_handle }}</span>
+                        <span class="stat-label">TikTok</span>
+                    </div>
+                    {% endif %}
+                    {% if influencer.youtube_channel %}
+                    <div class="stat-item">
+                        <i class="fab fa-youtube"></i>
+                        <span class="stat-value">{{ influencer.youtube_channel }}</span>
+                        <span class="stat-label">YouTube</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="rating-section">
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+                    <span class="rating-value">5.0</span>
+                    <span class="reviews-count">(5 Reviews)</span>
+                </div>
+
+                <div class="profile-badges">
+                    {% if influencer.niche %}
+                    <div class="badge">
+                        <i class="fas fa-tag"></i>
+                        {{ influencer.niche }}
+                    </div>
+                    {% endif %}
+                    <div class="badge">
+                        <i class="fas fa-star"></i>
+                        Top Creator
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-bolt"></i>
+                        Responds Fast
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- Bio Section -->
+            <div class="profile-bio animate__animated animate__fadeInLeft">
+                <div class="bio-title">About {{ influencer.username }}</div>
+                <div class="bio-text">
+                    {{ influencer.bio|default:"This influencer creates engaging content and collaborates with brands to create authentic marketing campaigns." }}
+                </div>
+
+                <!-- Social Media Links -->
+                {% if influencer.instagram_handle or influencer.tiktok_handle or influencer.youtube_channel %}
+                <div class="social-links" style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: #333333;">Follow {{ influencer.username }}</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        {% if influencer.instagram_handle %}
+                        <a href="https://instagram.com/{{ influencer.instagram_handle }}" target="_blank" class="social-link-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #E4405F, #FFD600); color: white; padding: 0.5rem 1rem; border-radius: 25px; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease;">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                        {% endif %}
+                        {% if influencer.tiktok_handle %}
+                        <a href="https://tiktok.com/@{{ influencer.tiktok_handle }}" target="_blank" class="social-link-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #000000, #FE2C55); color: white; padding: 0.5rem 1rem; border-radius: 25px; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease;">
+                            <i class="fab fa-tiktok"></i>
+                            TikTok
+                        </a>
+                        {% endif %}
+                        {% if influencer.youtube_channel %}
+                        <a href="https://youtube.com/channel/{{ influencer.youtube_channel }}" target="_blank" class="social-link-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #FF0000, #CC0000); color: white; padding: 0.5rem 1rem; border-radius: 25px; text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease;">
+                            <i class="fab fa-youtube"></i>
+                            YouTube
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="profile-sidebar animate__animated animate__fadeInRight">
+                <div class="sidebar-title">Selected Package</div>
+
+                <div class="selected-package" id="selectedPackage" style="display: none;">
+                    <h3 id="selectedPackageTitle">3 Instagram Stories</h3>
+                    <div class="price" id="selectedPackagePrice">$160</div>
+                </div>
+
+                <button class="add-to-cart-btn" onclick="addToCart()">
+                    Add to Cart
+                </button>
+
+                <div class="custom-offer">
+                    Can't find what you need?
+                    {% if user.is_authenticated and user.user_type == 'brand' %}
+                        <a href="{% url 'campaigns:send_custom_offer' influencer.id %}">Send a Custom Offer</a>
+                    {% else %}
+                        <a href="{% url 'authentication:login' %}">Login to Send Custom Offer</a>
+                    {% endif %}
+                </div>
+
+                <div class="how-it-works">
+                    <h4>How does it work?</h4>
+                    <a href="{% url 'how_it_works' %}">Learn more about our process</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Packages Section -->
+        <div class="packages-section animate__animated animate__fadeInUp">
+            <h2 style="font-size: 1.8rem; margin-bottom: 2rem; text-align: center; background: linear-gradient(135deg, var(--heliotrope), var(--mauve)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                {% if influencer.niche %}
+                    {{ influencer.niche|title }} Content Packages
+                {% else %}
+                    Content Packages
+                {% endif %}
+            </h2>
+
+            <!-- Package Tabs -->
+            <div class="package-tabs">
+                <button class="tab-btn active" onclick="showTab('all')">All</button>
+                <button class="tab-btn" onclick="showTab('instagram')">Instagram</button>
+                <button class="tab-btn" onclick="showTab('tiktok')">TikTok</button>
+                <button class="tab-btn" onclick="showTab('ugc')">UGC</button>
+            </div>
+
+            <!-- Package Grid -->
+            <div class="package-grid">
+                <!-- Instagram Packages -->
+                {% if influencer.instagram_handle %}
+                <div class="package-card instagram-package" data-platform="instagram">
+                    <div class="package-header">
+                        <div class="package-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <div class="package-title">3 Instagram Stories</div>
+                    </div>
+                    <div class="package-price">$160</div>
+                    <div class="package-description">
+                        3 Instagram stories featuring your brand. These can be all at once, or spread over a week...
+                        <a href="#" class="see-more" onclick="toggleDescription(this)">See More</a>
+                    </div>
+                    <button class="select-package-btn" onclick="selectPackage('3 Instagram Stories', 160)">
+                        Select Package
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- TikTok Packages -->
+                {% if influencer.tiktok_handle %}
+                <div class="package-card tiktok-package" data-platform="tiktok">
+                    <div class="package-header">
+                        <div class="package-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <div class="package-title">3 TikTok Videos</div>
+                    </div>
+                    <div class="package-price">$160</div>
+                    <div class="package-description">
+                        3 TikTok videos featuring your brand. These can be all at once, or spread over a week...
+                        <a href="#" class="see-more" onclick="toggleDescription(this)">See More</a>
+                    </div>
+                    <button class="select-package-btn" onclick="selectPackage('3 TikTok Videos', 160)">
+                        Select Package
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- UGC Packages (Available to all influencers) -->
+                <div class="package-card ugc-package" data-platform="ugc">
+                    <div class="package-header">
+                        <div class="package-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="package-title">3 UGC Product Photos</div>
+                    </div>
+                    <div class="package-price">$150</div>
+                    <div class="package-description">
+                        3 professional UGC product photos featuring your products.
+                        <a href="#" class="see-more" onclick="toggleDescription(this)">See More</a>
+                    </div>
+                    <button class="select-package-btn" onclick="selectPackage('3 UGC Product Photos', 150)">
+                        Select Package
+                    </button>
+                </div>
+
+                <div class="package-card ugc-package" data-platform="ugc">
+                    <div class="package-header">
+                        <div class="package-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="package-title">1 UGC Product Video</div>
+                    </div>
+                    <div class="package-price">$180</div>
+                    <div class="package-description">
+                        1 UGC product video fully edited and ready for your brand's use.
+                        <a href="#" class="see-more" onclick="toggleDescription(this)">See More</a>
+                    </div>
+                    <button class="select-package-btn" onclick="selectPackage('1 UGC Product Video', 180)">
+                        Select Package
+                    </button>
+                </div>
+
+                <!-- Show message if no social media platforms are set up -->
+                {% if not influencer.instagram_handle and not influencer.tiktok_handle %}
+                <div class="no-packages-message" style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: rgba(255, 255, 255, 0.9); border-radius: 20px; border: 1px solid rgba(138, 91, 168, 0.2);">
+                    <div style="color: #666; font-size: 1.1rem; margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle" style="color: var(--heliotrope); margin-right: 0.5rem;"></i>
+                        This creator hasn't set up their social media profiles yet.
+                    </div>
+                    <p style="color: rgba(51, 51, 51, 0.7);">
+                        UGC (User-Generated Content) packages are still available for collaboration.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        function showTab(platform) {
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show/hide packages
+            const allPackages = document.querySelectorAll('.package-card');
+            allPackages.forEach(pkg => {
+                if (platform === 'all') {
+                    pkg.style.display = 'block';
+                } else {
+                    pkg.style.display = pkg.classList.contains(platform + '-package') ? 'block' : 'none';
+                }
+            });
+        }
+
+        // Package selection
+        function selectPackage(title, price) {
+            const selectedPackage = document.getElementById('selectedPackage');
+            const selectedPackageTitle = document.getElementById('selectedPackageTitle');
+            const selectedPackagePrice = document.getElementById('selectedPackagePrice');
+
+            selectedPackage.style.display = 'block';
+            selectedPackageTitle.textContent = title;
+            selectedPackagePrice.textContent = '$' + price;
+        }
+
+        // Add to cart functionality
+        function addToCart() {
+            const selectedPackage = document.getElementById('selectedPackage');
+            if (selectedPackage.style.display === 'none') {
+                alert('Please select a package first!');
+                return;
+            }
+
+            const title = document.getElementById('selectedPackageTitle').textContent;
+            const price = document.getElementById('selectedPackagePrice').textContent;
+
+            alert(`Added "${title}" (${price}) to cart!`);
+            // Here you would typically integrate with a cart system
+        }
+
+
+        // Toggle description expansion
+        function toggleDescription(link) {
+            const description = link.parentElement;
+            const fullText = 'This is the full package description with all details about deliverables, timeline, and requirements.';
+
+            if (link.textContent === 'See More') {
+                description.innerHTML = fullText + ' <a href="#" class="see-more" onclick="toggleDescription(this)">See Less</a>';
+            } else {
+                description.innerHTML = 'Package description summary... <a href="#" class="see-more" onclick="toggleDescription(this)">See More</a>';
+            }
+        }
+    </script>
+</body>
+</html>

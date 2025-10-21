@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Campaign Marketplace - CrewUp{% endblock %}
+
+{% block header_class %}bg-purple-600{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="pt-24 bg-gradient-to-br from-purple-100 to-white">
+    <div class="container mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Campaign Marketplace</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Discover and collaborate with brands on exciting campaigns that match your niche and audience</p>
+
+            <!-- Create Campaign Button for Brand Users -->
+            {% if user.is_authenticated and user.user_type == 'brand' %}
+            <div class="mt-8">
+                <a href="{% url 'campaigns:campaign_create' %}"
+                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Create New Campaign
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-medium text-gray-900">Filter Campaigns</h2>
+                <a href="{% url 'campaigns:campaign_list' %}" class="text-sm text-purple-600 hover:text-purple-500">Clear Filters</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Category Filter -->
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="category" name="category" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        <option value="">All Categories</option>
+                        <option value="fashion" {% if selected_category == 'fashion' %}selected{% endif %}>Fashion & Beauty</option>
+                        <option value="tech" {% if selected_category == 'tech' %}selected{% endif %}>Technology</option>
+                        <option value="food" {% if selected_category == 'food' %}selected{% endif %}>Food & Beverage</option>
+                        <option value="lifestyle" {% if selected_category == 'lifestyle' %}selected{% endif %}>Lifestyle</option>
+                        <option value="travel" {% if selected_category == 'travel' %}selected{% endif %}>Travel</option>
+                    </select>
+                </div>
+
+                <!-- Budget Range -->
+                <div>
+                    <label for="budget" class="block text-sm font-medium text-gray-700 mb-1">Budget Range</label>
+                    <select id="budget" name="budget" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        <option value="">Any Budget</option>
+                        <option value="0-500" {% if selected_budget == '0-500' %}selected{% endif %}>$0 - $500</option>
+                        <option value="501-1000" {% if selected_budget == '501-1000' %}selected{% endif %}>$501 - $1,000</option>
+                        <option value="1001-5000" {% if selected_budget == '1001-5000' %}selected{% endif %}>$1,001 - $5,000</option>
+                        <option value="5001+" {% if selected_budget == '5001+' %}selected{% endif %}>$5,001+</option>
+                    </select>
+                </div>
+
+                <!-- Platform -->
+                <div>
+                    <label for="platform" class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
+                    <select id="platform" name="platform" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        <option value="">All Platforms</option>
+                        <option value="instagram" {% if selected_platform == 'instagram' %}selected{% endif %}>Instagram</option>
+                        <option value="youtube" {% if selected_platform == 'youtube' %}selected{% endif %}>YouTube</option>
+                        <option value="tiktok" {% if selected_platform == 'tiktok' %}selected{% endif %}>TikTok</option>
+                        <option value="twitter" {% if selected_platform == 'twitter' %}selected{% endif %}>Twitter</option>
+                    </select>
+                </div>
+
+                <!-- Search -->
+                <div>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                    <input type="text" id="search" name="search" placeholder="Search campaigns..." value="{{ search_query }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Counter and Active Filters -->
+        <div class="mb-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <p class="text-gray-600">
+                    {% if campaigns %}
+                        Showing {{ campaigns.start_index }}-{{ campaigns.end_index }} of {{ campaigns.paginator.count }} campaigns
+                    {% else %}
+                        No campaigns found
+                    {% endif %}
+                </p>
+
+                <!-- Active Filter Tags -->
+                {% if selected_category or selected_budget or selected_platform or search_query %}
+                <div class="flex flex-wrap gap-2">
+                    {% if selected_category %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        Category: {{ selected_category|title }}
+                        <a href="?{% for key, value in current_params.items %}{% if key != 'category' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}" class="ml-1 text-purple-600 hover:text-purple-800">&times;</a>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_budget %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Budget: {% if selected_budget == '0-500' %}$0-$500{% elif selected_budget == '501-1000' %}$501-$1,000{% elif selected_budget == '1001-5000' %}$1,001-$5,000{% else %}$5,001+{% endif %}
+                        <a href="?{% for key, value in current_params.items %}{% if key != 'budget' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}" class="ml-1 text-green-600 hover:text-green-800">&times;</a>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_platform %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Platform: {{ selected_platform|title }}
+                        <a href="?{% for key, value in current_params.items %}{% if key != 'platform' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}" class="ml-1 text-blue-600 hover:text-blue-800">&times;</a>
+                    </span>
+                    {% endif %}
+
+                    {% if search_query %}
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        Search: "{{ search_query }}"
+                        <a href="?{% for key, value in current_params.items %}{% if key != 'search' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}" class="ml-1 text-gray-600 hover:text-gray-800">&times;</a>
+                    </span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Campaigns Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for campaign in campaigns %}
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div class="relative">
+                    {% if campaign.image %}
+                        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="w-full h-48 object-cover">
+                    {% else %}
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-400">No image available</span>
+                        </div>
+                    {% endif %}
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-purple-600 text-white px-3 py-1 rounded-full text-sm">
+                            ${{ campaign.budget }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">{{ campaign.category }}</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">{{ campaign.platform }}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ campaign.title }}</h3>
+                    <p class="text-gray-600 mb-4 line-clamp-2">{{ campaign.description }}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="flex -space-x-2">
+                                {% for influencer in campaign.influencers.all|slice:":3" %}
+                                    <img class="w-8 h-8 rounded-full border-2 border-white" src="{{ influencer.profile_image.url }}" alt="">
+                                {% endfor %}
+                            </div>
+                            <span class="text-sm text-gray-500">{{ campaign.influencers.count }} applied</span>
+                        </div>
+                        <a href="{% url 'campaigns:campaign_detail' campaign.id %}" class="text-purple-600 font-semibold hover:text-purple-700">View Details →</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-12">
+                <h3 class="text-xl font-medium text-gray-900 mb-2">No campaigns found</h3>
+                <p class="text-gray-600">Try adjusting your filters or check back later for new opportunities.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if campaigns.has_other_pages %}
+        <div class="flex justify-center mt-8">
+            <nav class="inline-flex rounded-md shadow">
+                {% if campaigns.has_previous %}
+                <a href="?{% for key, value in current_params.items %}{% if key != 'page' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}{% if current_params %}page={{ campaigns.previous_page_number }}{% if current_params %}&{% endif %}{% else %}page={{ campaigns.previous_page_number }}{% endif %}" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+                {% endif %}
+
+                {% for num in campaigns.paginator.page_range %}
+                    {% if campaigns.number == num %}
+                    <span class="px-3 py-2 border border-gray-300 bg-purple-50 text-sm font-medium text-purple-600">{{ num }}</span>
+                    {% else %}
+                    <a href="?{% for key, value in current_params.items %}{% if key != 'page' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}{% if current_params %}page={{ num }}{% if current_params %}&{% endif %}{% else %}page={{ num }}{% endif %}" class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if campaigns.has_next %}
+                <a href="?{% for key, value in current_params.items %}{% if key != 'page' %}{{ key }}={{ value }}{% if not forloop.last %}&{% endif %}{% endif %}{% endfor %}{% if current_params %}page={{ campaigns.next_page_number }}{% if current_params %}&{% endif %}{% else %}page={{ campaigns.next_page_number }}{% endif %}" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript for Filtering -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category');
+        const budgetSelect = document.getElementById('budget');
+        const platformSelect = document.getElementById('platform');
+        const searchInput = document.getElementById('search');
+
+        // Add event listeners for filters
+        categorySelect.addEventListener('change', applyFilters);
+        budgetSelect.addEventListener('change', applyFilters);
+        platformSelect.addEventListener('change', applyFilters);
+        searchInput.addEventListener('input', debounce(applyFilters, 500));
+
+        function applyFilters() {
+            const category = categorySelect.value;
+            const budget = budgetSelect.value;
+            const platform = platformSelect.value;
+            const search = searchInput.value;
+
+            // Build query parameters
+            const params = new URLSearchParams();
+
+            if (category) params.append('category', category);
+            if (budget) params.append('budget', budget);
+            if (platform) params.append('platform', platform);
+            if (search) params.append('search', search);
+
+            // Redirect with filters
+            const queryString = params.toString();
+            const newUrl = queryString ? `?${queryString}` : location.pathname;
+            window.location.href = newUrl;
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Auto-apply filters on page load if URL has parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.toString()) {
+            if (urlParams.get('category')) categorySelect.value = urlParams.get('category');
+            if (urlParams.get('budget')) budgetSelect.value = urlParams.get('budget');
+            if (urlParams.get('platform')) platformSelect.value = urlParams.get('platform');
+            if (urlParams.get('search')) searchInput.value = urlParams.get('search');
+        }
+    });
+</script>
+{% endblock %}

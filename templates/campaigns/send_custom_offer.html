@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Custom Offer - CrewUp</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --heliotrope: #c879ffff;
+            --mauve: #f2a8ffff;
+            --violet-web: #e498ffff;
+            --pink-lavender: #ffceffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: #FFFFFF;
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(255, 182, 255, 0.95), rgba(200, 121, 255, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(200, 121, 255, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6a4c93;
+            text-decoration: none;
+            background: linear-gradient(135deg, #6a4c93, #8a5ba8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn-secondary {
+            background-color: transparent;
+            color: #6a4c93;
+            border: 2px solid #6a4c93;
+        }
+
+        .nav-btn-secondary:hover {
+            background-color: rgba(138, 91, 168, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 120px;
+            padding-bottom: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .offer-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+            box-shadow: 0 8px 32px rgba(138, 91, 168, 0.15);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(138, 91, 168, 0.1);
+        }
+
+        .card-header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            color: rgba(51, 51, 51, 0.7);
+            font-size: 1rem;
+        }
+
+        .influencer-info {
+            background: linear-gradient(135deg, rgba(200, 121, 255, 0.1), rgba(242, 168, 255, 0.1));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(138, 91, 168, 0.2);
+        }
+
+        .influencer-info h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: rgba(51, 51, 51, 0.8);
+        }
+
+        .info-item i {
+            color: var(--heliotrope);
+            width: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-label .required {
+            color: var(--heliotrope);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(138, 91, 168, 0.2);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--heliotrope);
+            box-shadow: 0 0 0 3px rgba(200, 121, 255, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(138, 91, 168, 0.1);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--heliotrope), var(--mauve));
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(200, 121, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200, 121, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(138, 91, 168, 0.1);
+            color: #6a4c93;
+            border: 2px solid rgba(138, 91, 168, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(138, 91, 168, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .offer-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class="logo">CrewUp</a>
+            <div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'brand_dashboard' %}" class="nav-btn nav-btn-secondary">Dashboard</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="offer-card">
+            <div class="card-header">
+                <h1><i class="fas fa-paper-plane"></i> Send Custom Offer</h1>
+                <p>Create a personalized collaboration offer for {{ influencer.username }}</p>
+            </div>
+
+            <div class="influencer-info">
+                <h3><i class="fas fa-user"></i> Influencer Details</h3>
+                <div class="info-item">
+                    <i class="fas fa-user-circle"></i>
+                    <strong>Username:</strong> {{ influencer.username }}
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <strong>Email:</strong> {{ influencer.email }}
+                </div>
+                {% if influencer.followers_count %}
+                <div class="info-item">
+                    <i class="fas fa-users"></i>
+                    <strong>Followers:</strong> {{ influencer.followers_count|floatformat:"0" }}
+                </div>
+                {% endif %}
+            </div>
+
+            <form method="post">
+                        {% csrf_token %}
+                        
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">
+                        <i class="fas fa-heading"></i> Offer Title <span class="required">*</span>
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="error-message">{{ form.title.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">
+                        <i class="fas fa-align-left"></i> Description <span class="required">*</span>
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="error-message">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.offer_amount.id_for_label }}" class="form-label">
+                        <i class="fas fa-dollar-sign"></i> Offer Amount ($) <span class="required">*</span>
+                    </label>
+                    {{ form.offer_amount }}
+                    {% if form.offer_amount.errors %}
+                        <div class="error-message">{{ form.offer_amount.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.deliverables.id_for_label }}" class="form-label">
+                        <i class="fas fa-tasks"></i> Deliverables <span class="required">*</span>
+                    </label>
+                    {{ form.deliverables }}
+                    <small style="color: rgba(51, 51, 51, 0.6); display: block; margin-top: 0.25rem;">
+                        List what the influencer needs to deliver (e.g., 3 Instagram posts, 1 story, etc.)
+                    </small>
+                    {% if form.deliverables.errors %}
+                        <div class="error-message">{{ form.deliverables.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.deadline.id_for_label }}" class="form-label">
+                        <i class="fas fa-calendar-alt"></i> Deadline
+                    </label>
+                    {{ form.deadline }}
+                    {% if form.deadline.errors %}
+                        <div class="error-message">{{ form.deadline.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.campaign.id_for_label }}" class="form-label">
+                        <i class="fas fa-bullhorn"></i> Related Campaign (Optional)
+                    </label>
+                    {{ form.campaign }}
+                    {% if form.campaign.errors %}
+                        <div class="error-message">{{ form.campaign.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.brand_message.id_for_label }}" class="form-label">
+                        <i class="fas fa-comment"></i> Personal Message
+                    </label>
+                    {{ form.brand_message }}
+                    <small style="color: rgba(51, 51, 51, 0.6); display: block; margin-top: 0.25rem;">
+                        Add a personal message to make your offer stand out
+                    </small>
+                    {% if form.brand_message.errors %}
+                        <div class="error-message">{{ form.brand_message.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'influencers' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Offer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

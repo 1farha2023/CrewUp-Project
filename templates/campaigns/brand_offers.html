@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}My Sent Offers{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">My Sent Offers</h2>
+
+    {% if offers %}
+    <div class="row">
+        {% for offer in offers %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ offer.title }}</h5>
+                    <p class="card-text text-muted">{{ offer.description|truncatewords:20 }}</p>
+                    
+                    <div class="mb-2">
+                        <strong>To:</strong> {{ offer.influencer.username }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Amount:</strong> <span class="text-success">${{ offer.offer_amount }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Status:</strong> 
+                        <span class="badge 
+                            {% if offer.status == 'pending' %}bg-warning
+                            {% elif offer.status == 'accepted' %}bg-success
+                            {% elif offer.status == 'rejected' %}bg-danger
+                            {% else %}bg-secondary{% endif %}">
+                            {{ offer.get_status_display }}
+                        </span>
+                    </div>
+                    {% if offer.deadline %}
+                    <div class="mb-2">
+                        <strong>Deadline:</strong> {{ offer.deadline|date:"M d, Y" }}
+                    </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <small class="text-muted">Sent: {{ offer.created_at|date:"M d, Y" }}</small>
+                    </div>
+                    
+                    <a href="{% url 'campaigns:offer_detail' offer.id %}" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h5>No offers sent yet</h5>
+        <p>You haven't sent any custom offers to influencers yet. Browse influencers and send them personalized collaboration offers!</p>
+        <a href="{% url 'influencers' %}" class="btn btn-primary mt-2">Browse Influencers</a>
+    </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'brand_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
