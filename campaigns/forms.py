@@ -77,3 +77,4 @@ class CustomOfferForm(forms.ModelForm):
                 'class': 'form-control'
             }),
         }
+        

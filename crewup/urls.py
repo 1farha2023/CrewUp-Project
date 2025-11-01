@@ -21,8 +21,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', views.index, name='home'),
+    path('admin/', admin.site.urls),
     path('about/', views.about, name='about'),
     path('how-it-works/', views.how_it_works, name='how_it_works'),
     path('pricing/', views.pricing, name='pricing'),
@@ -34,8 +34,8 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('campaigns/', include('campaigns.urls')),
-    path('auth/', include('authentication.urls')),
     path('payment/', include('payments.urls')),
+    path('auth/', include('authentication.urls')),
     path('admin-dashboard/', include('adminPanel.urls', namespace='adminPanel')),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('influencer-dashboard/', views.influencer_dashboard, name='influencer_dashboard'),

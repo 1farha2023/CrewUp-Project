@@ -15,3 +15,4 @@ class EmailOrUsernameModelBackend(ModelBackend):
         if user and user.check_password(password):
             return user
         return None
+    
