@@ -274,3 +274,10 @@ def handle_subscription_deleted(subscription_data):
 
     except Exception as e:
         print(f"Error handling subscription deleted: {e}")
+@login_required
+def subscription_management(request):   
+    """View for managing user subscriptions"""
+    subscription = Subscription.objects.filter(user=request.user).first()
+    return render(request, 'payments/subscription_management.html', {
+        'subscription': subscription
+    })  
